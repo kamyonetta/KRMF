@@ -2,6 +2,12 @@
 
 A tiny pixel app for keeping life together.
 
+## Download for Mac 🍎
+
+**[Download KRMF 0.1.1](downloads/KRMF-0.1.1-macOS-Apple-Silicon.dmg?raw=1)**
+
+This edition keeps everything locally on your Mac. No account needed.
+
 ## Functionality
 
 -  **Calendar** — see your month, week, and important moments.
