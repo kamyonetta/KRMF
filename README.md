@@ -15,4 +15,14 @@ A tiny pixel app for keeping life together.
 
 Your Mac app and web companion stay in sync.
 
+## A peek inside ✨
+
+| Calendar | Planner |
+| --- | --- |
+| ![Weekly calendar](docs/screenshots/weekly-calendar.jpg) | ![Weekly planner](docs/screenshots/weekly-planner.jpg) |
+| ![Monthly calendar](docs/screenshots/monthly-calendar.jpg) | ![Daily planner](docs/screenshots/daily-planner.jpg) |
+| ![Yearly calendar](docs/screenshots/yearly-calendar.jpg) | ![Weekly habits](docs/screenshots/habit-week.jpg) |
+
+![Habit scores](docs/screenshots/habit-scores.jpg)
+
 *Il faut cultiver notre jardin.* 🌿
