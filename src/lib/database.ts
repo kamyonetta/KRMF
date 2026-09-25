@@ -3,6 +3,8 @@ import Database from "@tauri-apps/plugin-sql";
 import { connectWidgets, requestWidgetSync } from "./widgets/sync";
 import { queueSync, syncNow } from './cloud-sync';
 
+const cloudSyncEnabled = import.meta.env.VITE_KRMF_CLOUD_SYNC === '1';
+
 let connection: Promise<Database> | undefined;
 export function getDatabase(): Promise<Database> {
   connection ??= Database.load("sqlite:krmf.db").then(db => {
@@ -10,11 +12,11 @@ export function getDatabase(): Promise<Database> {
     db.execute = async (query, values) => {
       const result = await execute(query, values);
       requestWidgetSync();
-      if (!query.includes('_krmf_companion_state')) queueSync(db);
+      if (cloudSyncEnabled && !query.includes('_krmf_companion_state')) queueSync(db);
       return result;
     };
     connectWidgets(db);
-    void syncNow(db);
+    if (cloudSyncEnabled) void syncNow(db);
     return db;
   }).catch((error: unknown) => {
     connection = undefined;
