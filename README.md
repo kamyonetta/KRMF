@@ -10,7 +10,7 @@ A tiny pixel app for keeping life together.
 -  **To-dos** — check things off
 -  **Habits** — you = your habits.
 -  **Mac widgets** - Desktop widgets for hourly planner and to-do list.
--  **Web companion** — Almost exactly the same experience accessible through web. 
+-  **Web companion** — Almost exactly the same experience accessible through web. (For me though I need to work on some stuff to make it public ?:P)
 -  **Light and dark modes**
 
 Your Mac app and web companion stay in sync.
