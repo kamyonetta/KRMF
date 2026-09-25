@@ -1,0 +1,15 @@
+node_modules/
+dist/
+dist-companion/
+src-tauri/target/
+.tools/
+.DS_Store
+*.local
+*.zip
+*.dmg
+*.app
+
+native/widgets/build/
+
+# Generated WordPress companion bundles (created by npm run build:companion)
+wordpress/krmf-companion/web/assets/

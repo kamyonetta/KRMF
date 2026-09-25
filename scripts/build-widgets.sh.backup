@@ -1,0 +1,53 @@
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+APP="${1:-src-tauri/target/release/bundle/macos/KRMF.app}"
+IDENTITY="${KRMF_SIGN_IDENTITY:-E6737FE78B81B7DD10C929D1324C2A1690637A18}"
+TEAM="56PQ4C62FB"
+GROUP="group.$TEAM.com.krmf.widgets"
+EXT="$APP/Contents/PlugIns/KRMFWidgets.appex"
+mkdir -p "$EXT/Contents/MacOS" "$EXT/Contents/Resources" native/widgets/build
+python3 - "$EXT" "$GROUP" "$TEAM" <<'PY'
+import plistlib,sys,pathlib
+ext,group,team=sys.argv[1:]
+info={'CFBundleIdentifier':'com.krmf.app.widgets','CFBundleName':'KRMFWidgets','CFBundleDisplayName':'KRMF','CFBundleExecutable':'KRMFWidgets','CFBundlePackageType':'XPC!','CFBundleShortVersionString':'0.1.0','CFBundleVersion':'1','LSMinimumSystemVersion':'14.0','NSExtension':{'NSExtensionPointIdentifier':'com.apple.widgetkit-extension'},'CFBundleDevelopmentRegion':'en','NSHumanReadableCopyright':'KRMF'}
+pathlib.Path(ext,'Contents','Info.plist').write_bytes(plistlib.dumps(info))
+host = {
+    'com.apple.application-identifier': team + '.com.krmf.app',
+    'com.apple.developer.team-identifier': team,
+    'com.apple.security.application-groups': [group],
+    'com.apple.security.get-task-allow': True,
+}
+
+extension = {
+    'com.apple.application-identifier': team + '.com.krmf.app.widgets',
+    'com.apple.developer.team-identifier': team,
+    'com.apple.security.app-sandbox': True,
+    'com.apple.security.application-groups': [group],
+    'com.apple.security.get-task-allow': True,
+}
+
+pathlib.Path('native/widgets/build/host.entitlements').write_bytes(
+    plistlib.dumps(host)
+)
+pathlib.Path('native/widgets/build/extension.entitlements').write_bytes(
+    plistlib.dumps(extension)
+)
+PY
+xcrun swiftc -parse-as-library -O -target arm64-apple-macos14.0 -module-cache-path native/widgets/build/cache native/widgets/Shared.swift native/widgets/Widgets.swift -o "$EXT/Contents/MacOS/KRMFWidgets"
+xcrun swiftc -parse-as-library -O -target arm64-apple-macos14.0 -module-cache-path native/widgets/build/cache native/widgets/Shared.swift native/widgets/Bridge.swift -o "$APP/Contents/MacOS/KRMFWidgetBridge"
+cp public/fonts/PixelifySans.ttf public/fonts/OFL-PixelifySans.txt public/art/krmf-logo.png public/art/classroom-indie.png "$EXT/Contents/Resources/"
+HOST_PROFILE="$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles/51278e4d-0e3b-42ab-96b1-31ceedbd92d3.provisionprofile"
+WIDGET_PROFILE="$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles/aa45d377-7210-42ae-9cc9-fbed76aa16bc.provisionprofile"
+
+cp "$HOST_PROFILE" "$APP/Contents/embedded.provisionprofile"
+cp "$WIDGET_PROFILE" "$EXT/Contents/embedded.provisionprofile"
+/usr/bin/codesign --force \
+  --options runtime \
+  --sign "$IDENTITY" \
+  --entitlements native/widgets/build/extension.entitlements \
+  "$EXT"
+  
+/usr/bin/codesign --force --options runtime --sign "$IDENTITY" --entitlements native/widgets/build/host.entitlements "$APP/Contents/MacOS/KRMFWidgetBridge"
+/usr/bin/codesign --force --options runtime --sign "$IDENTITY" --entitlements native/widgets/build/host.entitlements "$APP"
+/usr/bin/codesign --verify --deep --strict "$APP"

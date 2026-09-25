@@ -1,0 +1,53 @@
+/* Native WebKit dragging and trackpad behavior, with KRMF pixel styling. */
+:root {
+  --scroll-track: #1b1d20;
+  --scroll-edge: #0c0d0f;
+  --scroll-thumb: #55595e;
+  --scroll-highlight: #a5a9ad;
+  --scroll-shadow: #2a2d31;
+  --scroll-grip: #d6d8da;
+  --scroll-hover: #71767c;
+}
+:root[data-theme='light'] {
+  --scroll-track: #e4d2b7;
+  --scroll-edge: #80654a;
+  --scroll-thumb: #c69b65;
+  --scroll-highlight: #fff0ce;
+  --scroll-shadow: #947046;
+  --scroll-grip: #fff5de;
+  --scroll-hover: #dbb783;
+}
+::-webkit-scrollbar { width: 20px; height: 20px; }
+::-webkit-scrollbar-track {
+  background: var(--scroll-track);
+  border: 2px solid var(--scroll-edge);
+  border-radius: 0;
+  box-shadow: inset 2px 2px 0 #0002;
+}
+::-webkit-scrollbar-thumb {
+  min-height: 40px;
+  min-width: 40px;
+  background-color: var(--scroll-thumb);
+  background-image: repeating-linear-gradient(to bottom, var(--scroll-grip) 0 2px, transparent 2px 4px);
+  background-size: 6px 10px;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 2px solid var(--scroll-edge);
+  border-radius: 0;
+  box-shadow: inset 2px 2px 0 var(--scroll-highlight), inset -2px -2px 0 var(--scroll-shadow);
+}
+::-webkit-scrollbar-thumb:horizontal {
+  background-image: repeating-linear-gradient(to right, var(--scroll-grip) 0 2px, transparent 2px 4px);
+  background-size: 10px 6px;
+}
+::-webkit-scrollbar-thumb:hover { background-color: var(--scroll-hover); }
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--scroll-hover);
+  box-shadow: inset 2px 2px 0 var(--scroll-shadow), inset -2px -2px 0 var(--scroll-highlight);
+}
+::-webkit-scrollbar-corner { background: var(--scroll-track); }
+::-webkit-scrollbar-button { display: none; }
+.weekly-scroll { scrollbar-gutter: stable; }
+@supports not selector(::-webkit-scrollbar) {
+  * { scrollbar-color: var(--scroll-thumb) var(--scroll-track); scrollbar-width: auto; }
+}

@@ -1,0 +1,3 @@
+Built-in image generation, using public/art/krmf-logo.png as the reference.
+
+Create a square app icon using the provided KRMF logo as the foreground. Exactly KRMF, preserve logo design and yellow-orange-pink pixel lettering and plum outline. Center it horizontally AND vertically, at 90% of canvas width. Background MUST be completely solid uniform opaque blue #3465B4 filling every pixel to all four square edges. Entire output is fully opaque. No gradients, no transparent pixels, no rounded corners, no smoke, no shadows on background, no texture, no extra marks. Flat blue square with the existing colorful logo centered. 1024 by 1024 square.

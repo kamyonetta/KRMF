@@ -1,0 +1,77 @@
+:root { font-family: 'Courier New', monospace; color: #453c49; background: #efe6d3; font-synthesis: none; -webkit-font-smoothing: antialiased; font-weight: 600; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+button, input { font: inherit; }
+button { cursor: pointer; color: inherit; }
+button:disabled { cursor: default; opacity: .55; }
+button:focus-visible, input:focus-visible { outline: 3px solid #876191; outline-offset: 5px; }
+/* Full-bleed classroom, softly defocused beneath crisp foreground objects. */
+.school-app { min-height: 100vh; isolation: isolate; position: relative; }
+.classroom-backdrop { position: fixed; inset: -12px; z-index: -2; pointer-events: none; background: #13294c url('/art/classroom-night.png') center center / cover no-repeat; filter: blur(1.5px); }
+.school-app::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(180deg, #07162a42, #0b203438 50%, #08162b72); }
+.school-topbar { min-height: 76px; padding: 18px 5%; display: flex; align-items: center; justify-content: space-between; color: #fff4d9; }
+.wordmark { border: 0; background: none; color: inherit; font-size: 28px; font-weight: 900; letter-spacing: 4px; padding: 0; text-align: left; text-shadow: 2px 3px #20362e; }
+.wordmark span { display: block; font-size: 8px; letter-spacing: 2px; margin-top: 5px; }
+.term-label { font-size: 10px; letter-spacing: 2px; color: #fff1ce; text-shadow: 1px 2px 3px #17261f; }
+.home { max-width: 740px; margin: auto; padding: 10px 24px 24px; }
+.welcome { text-align: center; margin-bottom: 16px; color: #fff4da; text-shadow: 0 2px 5px #14271d; }
+.eyebrow { font-size: 10px; letter-spacing: 2px; color: #6d7b65; }
+.welcome .eyebrow { color: #e6e5b9; }
+h1 { font-size: clamp(25px, 3vw, 34px); line-height: 1.2; letter-spacing: -1.5px; margin: 13px 0; }
+p { font-size: 12px; line-height: 1.8; font-weight: 400; }
+.welcome p { color: #fff0cd; margin: 0; }
+.module-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); aspect-ratio: 1; gap: 4px 22px; max-width: 610px; margin: auto; }
+.module-card { border: 0; background: transparent; box-shadow: none; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 0 4px; min-width: 0; color: #fff6e0; -webkit-tap-highlight-color: transparent; }
+.module-card:focus-visible { outline: 2px dashed #fff0b8; outline-offset: 2px; border-radius: 20px; }
+.icon-stage { display: block; width: clamp(105px, 13vw, 150px); height: clamp(105px, 13vw, 150px); transition: transform .22s ease, filter .22s ease; filter: drop-shadow(4px 8px 0 #14231b44) drop-shadow(0 5px 12px #12261e66); }
+.module-card:is(:hover,:focus-visible) .icon-stage { transform: translateY(-9px) scale(1.1) rotate(-3deg); filter: drop-shadow(7px 16px 0 #14231b33) drop-shadow(0 8px 18px #ffe1a54d); }
+.module-card:active .icon-stage { transform: translateY(-2px) scale(1.02); }
+.pixel-icon { width: 100%; height: 100%; overflow: visible; image-rendering: pixelated; }
+.module-name { margin-top: 2px; font-weight: 900; font-size: 16px; text-shadow: 2px 2px 0 #21382d, -1px -1px 0 #21382d, 0 3px 8px #13251b; }
+.module-note { font-size: 9px; margin-top: 6px; color: #ffedc6; text-shadow: 0 2px 4px #13251b; }
+.empty-cell { visibility: hidden; pointer-events: none; }
+.home-footer { display: flex; justify-content: space-between; gap: 12px; color: #fff0d0; font-size: 8px; letter-spacing: 1px; margin-top: 10px; text-shadow: 0 2px 4px #17261f; }
+.icon-body, .sprout, .pencil, .checkmark { transform-box: fill-box; transform-origin: center bottom; }
+.module-card:is(:hover,:focus-visible) .calendar .icon-body { animation: hop .7s steps(2,end) infinite; }
+.module-card:is(:hover,:focus-visible) .calendar-dates { animation: blink .7s steps(2,end) infinite; }
+.module-card:is(:hover,:focus-visible) .pencil { animation: scribble .6s steps(3,end) infinite; }
+.module-card:is(:hover,:focus-visible) .checkmark { animation: tick .8s steps(3,end) infinite; }
+.module-card:is(:hover,:focus-visible) .sprout { animation: grow 1s steps(4,end) infinite; }
+@keyframes hop { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-3px) rotate(-5deg); } }
+@keyframes blink { 50% { fill: #c45b62; } }
+@keyframes scribble { 0%,100% { transform: translate(0,0); } 33% { transform: translate(-3px,3px) rotate(-10deg); } 66% { transform: translate(-1px,5px) rotate(-10deg); } }
+@keyframes tick { 0%,100% { opacity: 1; transform: scale(1); } 35% { opacity: 0; } 70% { opacity: 1; transform: scale(1.25); } }
+@keyframes grow { 0%,100% { transform: scale(1) rotate(0); } 50% { transform: scale(1.12) rotate(8deg); } 75% { transform: scale(1.08) rotate(-5deg); } }
+.module-page { max-width: 980px; padding: 30px 32px 50px; margin: 10px auto 40px; background: #fcf5e8ed; border-radius: 6px; box-shadow: 0 12px 50px #15251d66; }
+.back-button { border: 2px solid #655747; background: #f8efda; padding: 10px 14px; box-shadow: 3px 3px #c9b99c; font-size: 12px; }
+.module-page > header { margin-top: 32px; }
+.empty-state, .habit-sheet { margin-top: 30px; padding: 30px; border: 3px solid #a48b71; background: #fff9e9; box-shadow: 6px 6px #d6c8aa; }
+.module-mark { color: #8b9a7a; border-bottom: 2px dashed #d8cbae; padding-bottom: 16px; }
+h2 { font-size: 20px; }
+.badge { display: inline-block; margin-top: 15px; background: #e1e7cf; padding: 9px 12px; font-size: 11px; }
+.habit-sheet label { display: block; margin-bottom: 12px; font-size: 13px; }
+.habit-input { display: flex; gap: 12px; }
+.habit-input input { width: 100%; min-width: 0; border: 2px solid #b4a18b; padding: 12px; background: #fffdf5; font-size: 13px; }
+.habit-input button { flex-shrink: 0; }
+.habit-table-wrap { overflow-x: auto; margin-top: 30px; }
+table { border-collapse: collapse; width: 100%; font-size: 12px; }
+caption { text-align: left; margin-bottom: 18px; color: #7b7167; font-size: 11px; }
+th, td { padding: 12px 6px; border-bottom: 1px solid #ded1b9; text-align: center; }
+th:first-child { text-align: left; min-width: 140px; max-width: 240px; overflow-wrap: anywhere; }
+th small { display: block; font-weight: 400; margin-top: 5px; }
+.checkin { width: 32px; height: 32px; border: 2px solid #b6ab92; background: #f8efda; }
+.checkin.done { color: #fff9e9; background: #6f8970; border-color: #48644e; }
+.habit-empty { margin-top: 40px; padding-top: 20px; border-top: 2px dashed #d8cbae; }
+.error { color: #993f49; }
+@media (min-height: 900px) { .home { padding-top: 30px; } .welcome { margin-bottom: 30px; } }
+@media (max-height: 800px) and (min-width: 651px) { .school-topbar { min-height: 62px; padding-block: 12px; } .home { max-width: 650px; padding-top: 0; } .module-grid { max-width: 490px; } .icon-stage { width: 112px; height: 112px; } .welcome h1 { font-size: 27px; } .welcome { margin-bottom: 8px; } }
+@media (max-width: 650px) { .term-label { display: none; } .home { padding: 16px; } .module-grid { gap: 4px; } .icon-stage { width: clamp(80px, 23vw, 130px); height: clamp(80px, 23vw, 130px); } .module-name { font-size: 13px; } .module-note { display: none; } .home-footer { font-size: 7px; } .habit-sheet { padding: 18px; } .module-page { margin-inline: 14px; padding-inline: 20px; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } .module-card:is(:hover,:focus-visible) .icon-stage { transform: none; } }
+
+/* Title-screen logo: only the logo and module names appear on the menu. */
+.logo-header { display: flex; justify-content: center; padding: 12px 20px 0; }
+.logo-home { display: block; width: min(480px, 68vw); padding: 0; border: 0; background: transparent; }
+.krmf-logo { display: block; width: 100%; height: auto; image-rendering: pixelated; filter: drop-shadow(0 7px 0 #24133130); }
+.logo-header.compact .logo-home { width: 190px; }
+.at-home .home { padding-top: 0; }
+@media (max-height: 800px) { .logo-home { width: min(380px, 60vw); } }

@@ -1,0 +1,143 @@
+/* Fit the complete sheet to the available window, preserving its proportions. */
+.school-app:not(.at-home) { height: 100dvh; min-height: 0; display: flex; flex-direction: column; }
+.school-app .logo-header.compact { flex: 0 0 64px; padding: 4px 0; height: 64px; }
+.school-app .logo-header.compact .logo-home { width: 140px; }
+.fit-frame { flex: 1; min-height: 0; position: relative; margin: 0 10px 10px; }
+.fit-content { position: absolute; top: 0; left: 50%; width: 1100px; transform-origin: top center; }
+.fit-content .module-page { zoom: 1; width: 100%; max-width: none; margin: 0; padding: 0 8px 8px; }
+.fit-content .back-button { margin-bottom: 8px; padding: 5px 12px; }
+.fit-content .calendar-toolbar { padding: 8px 14px; gap: 8px; }
+.fit-content .calendar-toolbar h1 { font-size: 25px; }
+.fit-content .calendar-range { width: auto; margin-left: auto; }
+.fit-content .calendar-bottom { position: relative; min-height: 54px; padding-block: 8px; }
+.fit-content .calendar-tabs button { padding: 5px 12px; }
+.fit-content .month-week { min-height: 78px; }
+.fit-content .month-day { min-height: 75px; }
+.fit-content .year-months { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; padding: 14px; }
+.fit-content .year-layout { grid-template-columns: minmax(0,1fr) 230px; }
+.fit-content .mini-month h2 { margin-bottom: 6px; }
+.fit-content .mini-grid { gap: 1px; }
+.fit-content .mini-day { height: 25px; aspect-ratio: auto; }
+.fit-content .important-panel { position: static; padding: 16px; }
+.fit-content .daily-planner-shell { zoom: 1; }
+.fit-content .planner-mode-switch { margin-bottom: 8px; }
+.fit-content .day-page { padding: 8px 14px; min-height: 0; }
+.fit-content .day-page > h2 { font-size: 19px; margin: 0 0 4px; }
+.fit-content .planner-save-status { margin: 0 0 4px; min-height: 16px; }
+.fit-content .daily-planner { gap: 12px; grid-template-columns: minmax(0,1.6fr) minmax(0,1fr); }
+.fit-content .daily-planner h3 { font-size: 19px; padding: 5px; }
+.fit-content .planner-hour { grid-template-columns: 68px minmax(0,1fr); border-bottom-width: 1px; }
+.fit-content .slot-line { min-height: 20px; height: 20px; }
+.fit-content .slot-line > input { height: 20px; font-size: 17px; padding: 0 8px; }
+.fit-content .hour-label { font-size: 19px; }
+.schedule-end { font-size: 15px; padding: 2px 8px; border-top: 1px solid currentColor; }
+.fit-content .daily-todo-line { min-height: 24px; padding: 1px 10px; }
+.fit-content .daily-todo-line input { font-size: 17px; padding: 1px 0; }
+.fit-content .daily-right { gap: 10px; }
+.fit-content .note-lines { display: block; padding: 8px; }
+.note-lines textarea { display: block; width: 100%; min-height: 185px; field-sizing: content; resize: none; background: transparent; color: white; border: 0; font: 18px/1.5 'Pixelify Sans',monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+.fit-content .day-event-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.fit-content .day-event-list > li { border: 0; padding: 2px; gap: 5px; }
+.fit-content .day-event-list h3 { font-size: 15px; margin: 0; }
+.fit-content .day-event-list .event-type { display: none; }
+.fit-content .weekly-scroll { overflow: visible; max-height: none; }
+.fit-content .weekly-board { min-width: 0; }
+.fit-content .weekly-day-column { height: 560px; }
+.fit-content .weekly-empty-slot { height: calc(100% / 28); }
+.fit-content .weekly-timeline { margin-bottom: 18px; }
+.fit-content .weekly-event { gap: 0; padding: 0 3px; }
+.fit-content .weekly-event strong { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 0; }
+.fit-content .weekly-event span { font-size: 10px; }
+.fit-content .weekly-headers button { padding: 3px; }
+.fit-content .weekly-actions { padding: 5px 12px; }
+.fit-content .weekly-allday { min-height: 25px; }
+.fit-content .week-planner-layout { padding: 12px; gap: 12px; grid-template-columns: minmax(0,1.65fr) minmax(260px,1fr); }
+.fit-content .planner-day-row { min-height: 72px; }
+.fit-content .planner-day-content { grid-template-columns:minmax(0,7fr) minmax(180px,3fr); }
+.fit-content .planner-day-todos { max-height:205px; padding:4px 7px; }
+.fit-content .planner-day-todo { min-height:23px; padding:1px 0; }
+.fit-content .planner-day-todo>span { font-size:14px; }
+.fit-content .weekly-planner textarea { min-height: 72px; field-sizing: content; resize: none; padding: 7px 10px; font-size: 17px; }
+.fit-content .planner-week-notes textarea { min-height: 145px; }
+.fit-content .planner-week-todos { max-height: none; overflow: visible; }
+.fit-content .planner-task-row { padding: 4px 10px; }
+.fit-content .imported-todo { font-size: 16px; }
+.fit-content .week-planner-sidebar { gap: 12px; }
+.fit-content .week-planner-sidebar h2 { padding: 6px; font-size: 20px; }
+.fit-content .habit-week { grid-template-columns: repeat(4,minmax(0,1fr)); }
+.theme-switch svg { width: 30px; height: 30px; display: block; }
+.delete-event-list > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 12px 0; }
+.delete-event-list button,.delete-important-button { font: inherit; color: inherit; background: transparent; border: 2px solid currentColor; padding: 4px 8px; }
+.delete-important-button { margin-left: auto; }
+:root[data-theme=light] .note-lines textarea { color: #443426; caret-color: #443426; }
+/* Full-year overview and the intentionally scrollable, roomier timed week. */
+.fit-content .month-week { min-height: 86px; }
+.fit-content .month-day { min-height: 83px; }
+.fit-content .year-months { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px 12px; }
+.fit-content .year-layout { grid-template-columns: minmax(0,1fr) 190px; }
+.fit-content .mini-day { height: 26px; }
+.fit-content .weekly-scroll { height: 620px; max-height: 620px; overflow-y: auto; overflow-x: hidden; }
+.fit-content .weekly-day-column { height: 1800px; }
+.fit-content .weekly-empty-slot { height: 60px; }
+.fit-content .weekly-event { padding: 3px 5px; gap: 3px; }
+.fit-content .weekly-event strong { font-size: 16px; }
+.fit-content .weekly-event span { font-size: 13px; }
+.fit-content .weekly-headers { position: sticky; top: 0; }
+.fit-content .weekly-headers button { padding: 8px; }
+.fit-content .weekly-timeline { margin-bottom: 0; }
+.fit-content .daily-todo-line { min-height: 34px; padding: 5px 10px; }
+.fit-content .daily-todo-line input { font-size: 19px; }
+/* Transformed sheets fit inside this viewport; their unscaled bounds must not
+   create document scrollbars. The weekly timeline keeps its own scrolling. */
+.fit-frame { overflow: clip; }
+.at-home .module-grid { grid-template-rows: auto; aspect-ratio: auto; }
+.at-home .empty-cell { display: none; }
+.at-home .home { padding-top: 30px; }
+/* A separate dock keeps arrow locations independent of sheet height and scale. */
+.navigation-dock { position: absolute; bottom: 4px; left: 50%; width: 1084px; transform-origin: bottom center; z-index: 10; }
+.navigation-dock .calendar-bottom { position: relative; min-height: 58px; margin: 0; padding: 8px 70px; border: 4px solid #050505; background: #08080bbc; box-shadow: 6px 6px #0007; color: white; font-family: 'Pixelify Sans',monospace; }
+.navigation-dock .calendar-navigation { position: relative; display: grid; grid-template-columns: 35px 350px 35px; gap: 22px; }
+.navigation-dock .calendar-navigation h2 { width: 350px; min-width: 0; font-size: 25px; white-space: nowrap; }
+.navigation-dock .triangle-button { width: 35px; height: 35px; }
+.navigation-dock .today-button { position: absolute; left: calc(100% + 14px); top: 5px; width: 25px; height: 25px; margin: 0; }
+:root[data-theme=light] .navigation-dock .calendar-bottom { color: #443426; border-color: #67513e; background: #f3e6cfee; box-shadow: 5px 5px #604b3540; }
+
+/* Floating pixel objects, matching the main menu's illustrated modules. */
+.school-app .theme-switch, :root[data-theme=light] .school-app .theme-switch { padding: 4px; border: 0; background: transparent; box-shadow: none; }
+.school-app .theme-switch svg { width: 112px; height: 112px; image-rendering: pixelated; filter: drop-shadow(3px 4px 0 #29173830); }
+
+/* Events stay within their own time interval, with a visible gap at boundaries. */
+.fit-content .weekly-event { min-height: 0; box-shadow: none; justify-content: flex-start; }
+.fit-content .weekly-event strong { line-height: 18px; }
+.fit-content .weekly-event span { line-height: 14px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fit-content .weekly-event.short { padding-block: 1px; gap: 0; }
+.fit-content .weekly-event.short span { display: none; }
+
+/* Merged daily activities retain the hourly ruler and original slot positions. */
+.daily-time-grid { display: grid; grid-template-columns: 68px 35px minmax(0,1fr); grid-template-rows: repeat(30,20px); }
+.daily-time-grid .hour-label { grid-column: 1; border-bottom: 1px solid var(--frame-line); }
+.daily-minute { grid-column: 2; display: grid; place-items: center; font: 13px 'Pixelify Sans',monospace; color: #ccc; border-right: 2px solid var(--frame-line); border-bottom: 1px solid #ffffff25; }
+.fit-content .daily-time-grid .daily-slot-input { grid-column: 3; min-height: 0; height: 20px; font-size: 17px; padding: 0 8px; border-bottom: 1px solid #ffffff25; }
+.daily-slot-input::placeholder { color: white; opacity: 1; }
+.daily-slot-input.covered { visibility: hidden; }
+.daily-merged-block { grid-column: 3; z-index: 1; min-height: 0; min-width: 0; margin: 1px 3px; padding: 2px 8px; display: flex; flex-direction: column; justify-content: center; gap: 1px; text-align: left; overflow: hidden; color: white; background: #303236d9; border: 1px solid var(--frame-dark); box-shadow: inset 0 1px var(--frame-face); animation: daily-merge .22s ease-out; }
+.daily-merged-block strong { font-size: 17px; line-height: 18px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.daily-merged-block span { font-size: 11px; line-height: 12px; opacity: .8; white-space: nowrap; }
+.daily-merged-block:hover:enabled { background: #404348e8; }
+:root[data-theme=light] .daily-merged-block { background: #e4d4bde0; color: #443426; }
+:root[data-theme=light] .daily-merged-block:hover:enabled { background: #dac3a2; }
+:root[data-theme=light] .daily-minute { color: #735c46; border-bottom-color: #977f6460; }
+:root[data-theme=light] .daily-time-grid .daily-slot-input { border-bottom-color: #977f6460; }
+:root[data-theme=light] .daily-slot-input::placeholder { color: #443426; }
+@keyframes daily-merge { from { opacity: .25; clip-path: inset(3px 0); transform: scaleY(.95); } to { opacity: 1; clip-path: inset(0); transform: scaleY(1); } }
+@media(prefers-reduced-motion:reduce) { .daily-merged-block { animation: none; } }
+
+/* Single activities share the merged block's surface without adding row height. */
+.daily-merged-block { border-left: 3px solid var(--frame-light); }
+.daily-merged-block.single { padding-block: 0; gap: 0; }
+.daily-merged-block.single strong { font-size: 16px; line-height: 15px; }
+.daily-merged-block.single span { display: none; }
+.fit-content .note-lines { padding: 0; }
+.note-lines textarea { padding: 7px 10px; font: 17px/1.55 'Pixelify Sans',monospace; border-radius: 0; -webkit-appearance: none; appearance: none; }
+:root[data-theme] .school-app .note-lines textarea:focus { outline: 2px solid #ffffff88; outline-offset: -4px; background: #ffffff06; box-shadow: none; }
+:root[data-theme=light] .school-app .note-lines textarea:focus { outline-color: #89622d; background: #fffaef; box-shadow: inset 0 -2px #8a6943; }

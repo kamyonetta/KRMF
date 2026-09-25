@@ -1,0 +1,49 @@
+.theme-switch { position: fixed; right: 24px; bottom: 22px; z-index: 20; display: flex; align-items: center; gap: 12px; color: #fff1d6; background: #211d29ec; border: 3px solid #0b0810; padding: 12px 16px; box-shadow: 4px 4px #0006; font: 17px 'Pixelify Sans',monospace; }
+.theme-switch-track { display: inline-block; width: 34px; height: 18px; border: 2px solid currentColor; padding: 2px; }
+.theme-switch-track i { display: block; width: 10px; height: 10px; background: currentColor; }
+.theme-switch[aria-checked=true] .theme-switch-track i { margin-left: 16px; }
+:root[data-theme=light] { color: #40382f; background: #c9bda9; color-scheme: light; }
+:root[data-theme=light] .classroom-backdrop { background-color:#756d60; background-image:url('/art/classroom-indie.png'); filter:blur(1.5px) brightness(.78) saturate(.78); }
+:root[data-theme=light] .school-app::before { background: linear-gradient(#756a5a42,#81736238 60%,#665b4c55); }
+:root[data-theme=light] .theme-switch { color: #40352b; background: #d8c8b1f5; border-color: #695743; box-shadow: 4px 4px #4e403650; }
+:root[data-theme=light] .module-name { color: #fff6df; }
+:root[data-theme=light] :is(.calendar-shell,.calendar-dialog) { background: #d8cab5f2; color: #40352b; border-color: #67513e; box-shadow: 5px 5px #3e342c55; }
+:root[data-theme=light] :is(.calendar-shell,.calendar-dialog) :is(button,input,textarea) { color: #443426; }
+:root[data-theme=light] :is(.calendar-toolbar,.month-weekdays,.calendar-bottom,.weekly-headers) { background: #c4b39cf5; border-color: #67513e; }
+:root[data-theme=light] :is(.calendar-tabs button,.day-back,.dialog-actions button,.habit-actions button,.habit-delete-list button,.weekly-actions button,.planner-add-task,.habit-weekday-picker button) { background: #d2c1a9; color: #40352b; border-color: #67513e; }
+:root[data-theme=light] :is(.calendar-tabs button.chosen,.habit-weekday-picker button.chosen) { background: #bca783; box-shadow: inset 0 -3px #70583c; }
+:root[data-theme=light] :is(.calendar-range,.mini-weekday,.important-panel p,.day-empty,.event-type,.planner-save-status,.planner-state,.planner-empty,.imported-todo small,.weekly-actions,.weekly-hours span,.weekly-allday>span,.habit-rest,.habit-hint,.habit-day h2 span,.habit-score-intro p,.habit-score-card small) { color: #735c46; }
+:root[data-theme=light] :is(.month-week,.month-cell,.month-weekdays>div,.important-panel,.important-panel li,.day-event-list>li,.daily-planner section,.daily-planner h3,.planner-hour,.hour-label,.slot-line>span,.planner-day-boxes,.planner-day-row,.planner-date-link,.week-planner-sidebar>section,.week-planner-sidebar h2,.weekly-day-column,.weekly-allday,.weekly-allday>div,.weekly-headers button,.habit-day,.habit-day h2,.habit-score-card,.habit-delete-list li) { border-color: #8a735a; }
+:root[data-theme=light] :is(.month-day,.habit-check-row) { color: #443426; }
+:root[data-theme=light] :is(.month-day:hover,.weekly-headers button:hover:enabled,.weekly-empty-slot:hover:enabled,.habit-check-row:hover:enabled,.planner-date-link:hover:enabled) { background: #a07c4020; }
+:root[data-theme=light] :is(.important-panel,.daily-planner section,.habit-day,.weekly-hours) { background: #d7c8b260; }
+:root[data-theme=light] :is(.daily-planner h3,.hour-label,.planner-date-link,.week-planner-sidebar h2,.habit-day h2) { background: #c7b69e80; }
+:root[data-theme=light] :is(.daily-planner input,.weekly-planner textarea,.planner-task-row input,.calendar-dialog input:not([type=checkbox]):not([type=radio]),.planner-date-picker input) { background: transparent; color: #443426; caret-color: #443426; color-scheme: light; }
+:root[data-theme=light] :is(.calendar-dialog input:not([type=checkbox]):not([type=radio]),.planner-date-picker input) { border-color: #806d58; background: #e2d4c0; }
+:root[data-theme=light] :is(.daily-todo-line input,.note-lines input,.planner-task-row input,.imported-todo,.slot-line+.slot-line) { border-color: #977f64; }
+:root[data-theme=light] .slot-line>input::placeholder { color: #443426; }
+:root[data-theme=light] .slot-line>span { color: #735c46; }
+:root[data-theme=light] :is(.daily-planner input:focus,.weekly-planner textarea:focus) { background: #e6dac7; box-shadow: inset 0 -2px #7b6246; }
+:root[data-theme=light] :is(.calendar-shell,.calendar-dialog) :focus-visible { outline-color: #89622d; }
+:root[data-theme=light] .weekly-empty-slot { border-bottom-color: #8a735a35; }
+:root[data-theme=light] .weekly-empty-slot:nth-child(2n) { border-bottom-color: #8a735a70; }
+:root[data-theme=light] .weekly-event { background: #d9dfdc; background: color-mix(in srgb,var(--block-color) 26%,#f8eddb 74%); color: #352b23; border-top-color: #8a735a; border-right-color: #8a735a; border-bottom-color: #8a735a; }
+:root[data-theme=light] .weekly-event.manual { background: #e2d4bf; border-left-color: #8a6943; }
+:root[data-theme=light] .weekly-allday button { background: #ead8ba; color: #443426; border-left-color: var(--block-color,#80623e); }
+:root[data-theme=light] .mini-day { color: #443426; }
+:root[data-theme=light] .mini-day.selected { background: #9b784133; }
+:root[data-theme=light] .calendar-navigation h2 { text-shadow: 1px 2px #fff2d7; }
+:root[data-theme=light] :is(.calendar-page,.habit-page)>.back-button { color: #443426; background: #f3e6cfee; border-color: #67513e; box-shadow: 3px 3px #604b3550; }
+:root[data-theme=light] .habit-score-card { background: #eee0d1; }
+:root[data-theme=light] :is(.habit-score-intro h2,.score-caption) { color: #806027; }
+:root[data-theme=light] .score-number { color: #ad762b; text-shadow: 2px 2px #fff1c8; }
+:root[data-theme=light] :is(.pixel-checkbox,.habit-check-row) svg path[fill="white"] { fill: #66513a; }
+:root[data-theme=light] :is(.pixel-checkbox,.habit-check-row) svg path:is([fill="#151519"],[fill="#17171b"],[fill="#16161b"]) { fill: #fff4dd; }
+:root[data-theme=light] .habit-check-row svg path[fill="#ffe27a"] { fill: #87632e; }
+:root[data-theme=light] .calendar-notice { background: #dbc4a14d; }
+:root[data-theme=light] .calendar-form-error { color: #9d3340; }
+:root[data-theme=light] .planner-save-error { border-color: #9d3340; }
+:root[data-theme=light] .calendar-dialog::backdrop { background: #4e3c2859; }
+:root[data-theme=light] .color-option input:checked+.swatch { outline-color: #67513e; }
+
+:root[data-theme=light] .add-important .plus-backplate { display: none; }

@@ -1,0 +1,52 @@
+/* Raised pixel frames share the scrollbar palette; existing dimensions stay intact. */
+:root {
+  --frame-face: #484a4d;
+  --frame-light: #777b80;
+  --frame-dark: #25272a;
+  --frame-ink: #0c0d0f;
+  --frame-line: #383b3e;
+  --frame-glint: #a5a9ad;
+}
+:root[data-theme='light'] {
+  --frame-face: #c69b65;
+  --frame-light: #f5dfb7;
+  --frame-dark: #947046;
+  --frame-ink: #6b503c;
+  --frame-line: #b49570;
+  --frame-glint: #fff2d6;
+}
+/* Main sheets, dialogs, and fixed navigation have matching beveled rails. */
+:root[data-theme] .school-app :is(.calendar-shell,.calendar-dialog,.navigation-dock .calendar-bottom) {
+  border-style: solid;
+  border-color: var(--frame-light) var(--frame-dark) var(--frame-dark) var(--frame-light);
+  border-radius: 0;
+  outline: 2px solid var(--frame-ink);
+  outline-offset: 0;
+  box-shadow: inset 2px 2px 0 var(--frame-glint), inset -2px -2px 0 var(--frame-face), 3px 3px 0 var(--frame-ink);
+}
+/* Recessed writing areas and habit cards use a subtler version of the rails. */
+:root[data-theme] .school-app :is(.daily-planner section,.planner-day-boxes,.week-planner-sidebar > section,.habit-day,.habit-score-card) {
+  border-color: var(--frame-face) var(--frame-dark) var(--frame-dark) var(--frame-face);
+  border-radius: 0;
+  box-shadow: inset 1px 1px 0 var(--frame-light), inset -1px -1px 0 var(--frame-dark);
+}
+:root[data-theme] .school-app .habit-day.today { box-shadow: inset 1px 1px 0 var(--frame-light), inset -1px -1px 0 var(--frame-dark), 0 0 0 2px var(--scroll-grip); }
+/* Divider lines remain quiet, leaving writing and event colors prominent. */
+:root[data-theme] .school-app :is(.calendar-toolbar,.month-weekdays,.month-week,.month-cell,.month-weekdays > div,.important-panel,.important-panel li,.daily-planner h3,.planner-hour,.hour-label,.slot-line > span,.planner-day-row,.planner-date-link,.week-planner-sidebar h2,.weekly-day-column,.weekly-allday,.weekly-allday > div,.weekly-headers,.weekly-headers button,.habit-day h2,.habit-delete-list li) {
+  border-color: var(--frame-line);
+}
+:root[data-theme] .school-app :is(.calendar-toolbar,.month-weekdays,.weekly-headers,.daily-planner h3,.week-planner-sidebar h2,.habit-day h2) {
+  box-shadow: inset 0 2px 0 color-mix(in srgb,var(--frame-light) 45%,transparent), inset 0 -2px 0 var(--frame-dark);
+}
+/* Small framed controls have the same raised face as the slider handles. */
+:root[data-theme] .school-app :is(.back-button,.calendar-tabs button,.dialog-actions button,.habit-actions button,.habit-delete-list button,.weekly-actions button,.planner-add-task,.habit-weekday-picker button,.delete-event-list button) {
+  border-color: var(--frame-ink);
+  border-radius: 0;
+  box-shadow: inset 2px 2px 0 var(--frame-light), inset -2px -2px 0 var(--frame-dark);
+}
+:root[data-theme] .school-app :is(.calendar-tabs button.chosen,.habit-weekday-picker button.chosen) {
+  box-shadow: inset 2px 2px 0 var(--frame-dark), inset -2px -2px 0 var(--frame-light), inset 0 -4px 0 var(--frame-face);
+}
+:root[data-theme] .school-app :is(.back-button,.dialog-actions button,.habit-actions button,.weekly-actions button,.planner-add-task):active:not(:disabled) {
+  box-shadow: inset 2px 2px 0 var(--frame-dark), inset -2px -2px 0 var(--frame-light);
+}
