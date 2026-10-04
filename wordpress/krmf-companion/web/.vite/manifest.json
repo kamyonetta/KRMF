@@ -3,6 +3,10 @@
     "file": "assets/classroom-indie-DNg7QFLr.png",
     "src": "../public/art/classroom-indie.png"
   },
+  "../public/art/classroom-night.png": {
+    "file": "assets/classroom-night-DXx8dVWX.png",
+    "src": "../public/art/classroom-night.png"
+  },
   "../public/art/krmf-logo.png": {
     "file": "assets/krmf-logo-DJqx8R2T.png",
     "src": "../public/art/krmf-logo.png"
@@ -12,16 +16,17 @@
     "src": "../public/fonts/PixelifySans.ttf"
   },
   "index.html": {
-    "file": "assets/index-CXPCGrUb.js",
+    "file": "assets/index-UTvts3q4.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
     "css": [
-      "assets/index-BNofx2rG.css"
+      "assets/index-BgUawTUe.css"
     ],
     "assets": [
       "assets/krmf-logo-DJqx8R2T.png",
       "assets/PixelifySans-lrcDQVzA.ttf",
+      "assets/classroom-night-DXx8dVWX.png",
       "assets/classroom-indie-DNg7QFLr.png"
     ]
   }

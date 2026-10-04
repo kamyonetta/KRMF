@@ -3,6 +3,7 @@
   import logo from '../../public/art/krmf-logo.png';
   import PixelIcon from '../lib/components/PixelIcon.svelte';
   import ThemeIcon from '../lib/components/ThemeIcon.svelte';
+  import { autosize } from '../lib/autosize';
 
   import {
     START,
@@ -623,13 +624,17 @@
     theme();
 
     void initialize()
-      .then(s => {
+      .then(async s => {
         notebook = s;
         ready = true;
 
         message = isPreview
           ? 'Test notebook · separate from your Mac'
           : 'Your private notebook';
+
+        if (!isPreview && navigator.onLine) {
+          await sync();
+        }
       })
       .catch(e => {
         error = String(e);
@@ -640,9 +645,8 @@
         ready &&
         !Object.keys(drafts).length
       ) {
-        void read().then(
-          s => notebook = s
-        );
+        if (!isPreview && navigator.onLine) void sync();
+        else void read().then(s => notebook = s);
       }
     };
 
@@ -817,18 +821,12 @@
       role="status"
     >
       <span>
-        {message}
+        {busy ? 'Updating…' : message}
         {count
           ? ` · ${count} ${isPreview ? 'local edits' : 'pending'}`
           : ''}
       </span>
 
-      <button
-        disabled={!ready || busy || isPreview}
-        onclick={sync}
-      >
-        {busy ? 'Syncing…' : 'Sync'}
-      </button>
     </div>
 
     {#if error}
@@ -1155,6 +1153,7 @@
 
                 <div class="web-planner-day-content">
                   <textarea
+                    use:autosize={note('daily_notes', 'plan_date', day)}
                     disabled={!ready}
                     aria-label={`Notes for ${fullDate(day)}`}
                     value={note('daily_notes', 'plan_date', day)}
@@ -1218,6 +1217,7 @@
             <section class="web-planner-week-notes">
               <h2>Weekly notes</h2>
               <textarea
+                use:autosize={note('weekly_planner_notes', 'week_start', week)}
                 disabled={!ready}
                 aria-label="Weekly notes"
                 value={note('weekly_planner_notes', 'week_start', week)}
@@ -1391,7 +1391,7 @@
       </section>
 
     {:else if view === 'calendar'}
-      <section class="sheet">
+      <section class="sheet month-sheet">
         <h1>
           {month.toLocaleDateString(
             'en-US',
@@ -1429,12 +1429,17 @@
                   date = day;
                 }}
               >
-                {Number(day.slice(-2))}
+                <span class="month-day-number">{Number(day.slice(-2))}</span>
 
                 {#if importantEvents(day).length}
                   <i
                     aria-label="Has important events"
                   ></i>
+                  <span class="month-important-list" aria-hidden="true">
+                    {#each importantEvents(day) as item}
+                      <b>{item.title}</b>
+                    {/each}
+                  </span>
                 {/if}
               </button>
             {:else}
