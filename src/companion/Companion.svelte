@@ -11,6 +11,7 @@
     fullDate,
     monthCells,
     WEEKDAYS,
+    MONTHS,
     COLORS
   } from '../modules/calendar/model.ts';
 
@@ -65,7 +66,7 @@
   );
 
   let view = $state(
-    ['day', 'week', 'habits', 'calendar', 'schedule'].includes(
+    ['day', 'week', 'habits', 'calendar', 'schedule', 'year'].includes(
       location.hash.slice(1)
     )
       ? location.hash.slice(1)
@@ -149,6 +150,16 @@
     new Date(date + 'T12:00:00')
   );
 
+  const shownYear = $derived(Number(date.slice(0, 4)));
+  const yearMonths = $derived(
+    shownYear === Number(START.slice(0, 4))
+      ? Array.from(
+          { length: 12 - (Number(START.slice(5, 7)) - 1) },
+          (_, i) => i + Number(START.slice(5, 7)) - 1
+        )
+      : Array.from({ length: 12 }, (_, i) => i)
+  );
+
   const occurrences = $derived(
     expandSeries(
       rows('timed_event_series') as unknown as TimedSeries[]
@@ -191,6 +202,18 @@
     }
   }
 
+  function shiftYear(amount: number) {
+    const nextYear = shownYear + amount;
+    const firstYear = Number(START.slice(0, 4));
+    const lastYear = Number(END.slice(0, 4));
+    if (nextYear < firstYear || nextYear > lastYear) return;
+    const month = nextYear === firstYear
+      ? Number(START.slice(5, 7))
+      : 1;
+    date = `${nextYear}-${String(month).padStart(2, '0')}-01`;
+    selectedCalendarDay = null;
+  }
+
   function shiftMonth(amount: number) {
     const current = new Date(`${date}T12:00:00`);
 
@@ -221,6 +244,10 @@
   }
 
   function previousPeriod() {
+    if (view === 'year') {
+      shiftYear(-1);
+      return;
+    }
     if (view === 'calendar') {
       shiftMonth(-1);
       return;
@@ -233,6 +260,10 @@
   }
 
   function nextPeriod() {
+    if (view === 'year') {
+      shiftYear(1);
+      return;
+    }
     if (view === 'calendar') {
       shiftMonth(1);
       return;
@@ -686,6 +717,17 @@
     </div>
   {/if}
 
+  <a
+    class="year-tab"
+    class:chosen={view === 'year'}
+    href="#year"
+    aria-current={view === 'year' ? 'page' : undefined}
+    onclick={() => tab('year')}
+  >
+    <span>YEARLY SCHEDULE</span>
+    <strong>{shownYear}</strong>
+  </a>
+
   <nav
     class="tabs"
     aria-label="Notebook sections"
@@ -726,6 +768,8 @@
         <span>
           {view === 'week' || view === 'schedule'
             ? 'WEEK OF ' + week
+            : view === 'year'
+              ? String(shownYear)
             : view === 'calendar'
               ? month.toLocaleDateString(
                   'en-US',
@@ -760,6 +804,8 @@
       >
         {view === 'calendar'
           ? 'This month'
+          : view === 'year'
+            ? 'This year'
           : view === 'week' || view === 'schedule'
             ? 'This week'
             : 'Today'}
@@ -879,6 +925,7 @@
         </section>
       {/if}
 
+      <div class="daily-planner-layout">
       <section class="sheet daily-schedule-sheet">
         <h1>
           Daily schedule
@@ -1091,169 +1138,95 @@
           ></textarea>
         </section>
       </div>
+      </div>
 
     {:else if view === 'week'}
-      <section class="sheet">
-        <h1>
-          This week’s little list
-        </h1>
+      <section class="sheet web-planner-shell">
+        <h1>Weekly planner</h1>
 
-        {#each weekly as task}
-          <div class="task">
-            <input
-              type="checkbox"
-              aria-label={'Complete ' + task.title}
-              checked={!!task.checked}
-              onchange={() =>
-                persist(
-                  'weekly_planner_tasks',
-                  {
-                    ...task,
-                    checked: task.checked ? 0 : 1
-                  }
-                )
-              }
-            />
+        <div class="web-planner-layout">
+          <section class="web-planner-days" aria-label="Days of the week">
+            {#each weekDates(date).filter(d => d >= START && d <= END) as day}
+              <article class="web-planner-day-row">
+                <a class="web-planner-date" href="#day" onclick={() => openDay(day)}>
+                  <strong>{new Date(day + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long' })}</strong>
+                  <span>{new Date(day + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                </a>
 
-            <input
-              aria-label="Weekly to-do title"
-              value={String(task.title)}
-              oninput={e =>
-                persist(
-                  'weekly_planner_tasks',
-                  {
-                    ...task,
-                    title: value(e)
-                  }
-                )
-              }
-            />
+                <div class="web-planner-day-content">
+                  <textarea
+                    disabled={!ready}
+                    aria-label={`Notes for ${fullDate(day)}`}
+                    value={note('daily_notes', 'plan_date', day)}
+                    oninput={e => persist('daily_notes', { plan_date: day, body: value(e) })}
+                    placeholder="Daily notes…"
+                  ></textarea>
 
-            <button
-              class="delete"
-              aria-label={'Delete ' + task.title}
-              onclick={() =>
-                persist(
-                  'weekly_planner_tasks',
-                  task,
-                  true
-                )
-              }
-            >
-              ×
-            </button>
-          </div>
-        {/each}
+                  <div class="web-planner-day-todos" aria-label={`${fullDate(day)} to-do list`}>
+                    {#each rows('day_planner_lines').filter(r => r.section === 'todo' && r.plan_date === day) as task}
+                      <label class="task">
+                        <input
+                          type="checkbox"
+                          checked={!!task.checked}
+                          onchange={() => persist('day_planner_lines', { ...task, checked: task.checked ? 0 : 1 })}
+                        />
+                        <span>{task.text || 'Untitled to-do'}</span>
+                      </label>
+                    {:else}
+                      <span class="muted web-planner-empty">No to-dos</span>
+                    {/each}
+                  </div>
+                </div>
+              </article>
+            {/each}
+          </section>
 
-        <button
-          class="add"
-          disabled={!ready}
-          onclick={() =>
-            persist(
-              'weekly_planner_tasks',
-              {
-                id: crypto.randomUUID(),
-                week_start: week,
-                title: '',
-                checked: 0,
-                created_at:
-                  new Date().toISOString()
-              }
-            )
-          }
-        >
-          + Add a weekly to-do
-        </button>
-      </section>
+          <aside class="web-planner-sidebar">
+            <section class="web-planner-week-todos">
+              <h2>Weekly to-do list</h2>
 
-      <section class="sheet">
-        <h2>
-          Daily to-dos this week
-        </h2>
+              {#each weekly as task}
+                <div class="task">
+                  <input
+                    type="checkbox"
+                    aria-label={'Complete ' + task.title}
+                    checked={!!task.checked}
+                    onchange={() => persist('weekly_planner_tasks', { ...task, checked: task.checked ? 0 : 1 })}
+                  />
+                  <input
+                    aria-label="Weekly to-do title"
+                    value={String(task.title)}
+                    oninput={e => persist('weekly_planner_tasks', { ...task, title: value(e) })}
+                  />
+                  <button class="delete" aria-label={'Delete ' + task.title} onclick={() => persist('weekly_planner_tasks', task, true)}>×</button>
+                </div>
+              {/each}
 
-        {#each weekDates(date).filter(
-          d => d >= START && d <= END
-        ) as day}
-          <div class="week-day">
-            <a
-              href="#day"
-              onclick={() => openDay(day)}
-            >
-              {fullDate(day)}
-            </a>
+              <button
+                class="add"
+                disabled={!ready}
+                onclick={() => persist('weekly_planner_tasks', {
+                  id: crypto.randomUUID(),
+                  week_start: week,
+                  title: '',
+                  checked: 0,
+                  created_at: new Date().toISOString()
+                })}
+              >+ Add a weekly to-do</button>
+            </section>
 
-            {#each rows('day_planner_lines').filter(
-              r =>
-                r.section === 'todo' &&
-                r.plan_date === day
-            ) as task}
-              <label class="task">
-                <input
-                  type="checkbox"
-                  checked={!!task.checked}
-                  onchange={() =>
-                    persist(
-                      'day_planner_lines',
-                      {
-                        ...task,
-                        checked:
-                          task.checked ? 0 : 1
-                      }
-                    )
-                  }
-                />
-
-                <span>
-                  {task.text || 'Untitled to-do'}
-                </span>
-              </label>
-            {/each}           
+            <section class="web-planner-week-notes">
+              <h2>Weekly notes</h2>
               <textarea
-              disabled={!ready}
-              aria-label={`Notes for ${fullDate(day)}`}
-              value={note(
-                'daily_notes',
-                'plan_date',
-                day
-              )}
-              oninput={e =>
-                persist(
-                  'daily_notes',
-                  {
-                    plan_date: day,
-                    body: value(e)
-                  }
-                )
-              }
-              placeholder="Daily notes…"
-            ></textarea>
-          </div>
-        {/each}
-      </section>
-
-      <section class="sheet">
-        <h2>
-          Weekly notes
-        </h2>
-
-        <textarea
-          disabled={!ready}
-          aria-label="Weekly notes"
-          value={note(
-            'weekly_planner_notes',
-            'week_start',
-            week
-          )}
-          oninput={e =>
-            persist(
-              'weekly_planner_notes',
-              {
-                week_start: week,
-                body: value(e)
-              }
-            )
-          }
-        ></textarea>
+                disabled={!ready}
+                aria-label="Weekly notes"
+                value={note('weekly_planner_notes', 'week_start', week)}
+                oninput={e => persist('weekly_planner_notes', { week_start: week, body: value(e) })}
+                placeholder="Notes for the week…"
+              ></textarea>
+            </section>
+          </aside>
+        </div>
       </section>
 
     {:else if view === 'habits'}
@@ -1367,6 +1340,54 @@
             + Add habit
           </button>
         </form>
+      </section>
+
+    {:else if view === 'year'}
+      <section class="sheet year-sheet">
+        <h1>{shownYear}</h1>
+        <p class="muted">Choose a day to see what matters.</p>
+
+        <div class="web-year-layout">
+          <div class="web-year-months">
+            {#each yearMonths as monthIndex}
+              <section class="web-mini-month" aria-label={`${MONTHS[monthIndex]} ${shownYear}`}>
+                <h2>{MONTHS[monthIndex]}</h2>
+                <div class="web-mini-grid">
+                  {#each WEEKDAYS as day}<span class="web-mini-weekday">{day.slice(0, 2)}</span>{/each}
+                  {#each monthCells(shownYear, monthIndex) as day}
+                    {#if day}
+                      <button
+                        class:today={day === todayKey()}
+                        class:selected={day === selectedCalendarDay}
+                        class:has-events={importantEvents(day).length > 0}
+                        aria-label={`${fullDate(day)}${importantEvents(day).length ? `, ${importantEvents(day).length} important events` : ''}`}
+                        onclick={() => { selectedCalendarDay = day; date = day; }}
+                      >
+                        <span>{Number(day.slice(-2))}</span>
+                        {#if importantEvents(day).length}<i></i>{/if}
+                      </button>
+                    {:else}<span></span>{/if}
+                  {/each}
+                </div>
+              </section>
+            {/each}
+          </div>
+
+          <aside class="web-year-important">
+            <h2>Important events</h2>
+            {#if selectedCalendarDay}
+              <button class="calendar-day-link" onclick={() => openDay(selectedCalendarDay!)}>
+                <strong>{fullDate(selectedCalendarDay)}</strong>
+                <span>Open daily planner →</span>
+              </button>
+              {#if importantEvents(selectedCalendarDay).length}
+                {#each importantEvents(selectedCalendarDay) as item}
+                  <p class="calendar-important-event"><i></i><span>{item.title}</span></p>
+                {/each}
+              {:else}<p class="muted">No important events for this day.</p>{/if}
+            {:else}<p class="muted">Choose a day to see its important events.</p>{/if}
+          </aside>
+        </div>
       </section>
 
     {:else if view === 'calendar'}
