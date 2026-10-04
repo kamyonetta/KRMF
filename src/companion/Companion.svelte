@@ -1385,6 +1385,10 @@
                   <p class="calendar-important-event"><i></i><span>{item.title}</span></p>
                 {/each}
               {:else}<p class="muted">No important events for this day.</p>{/if}
+              <div class="important-event-add year-important-add">
+                <input maxlength="120" bind:value={newImportantTitle} placeholder="Important event…" aria-label="Important event name"/>
+                <button disabled={!ready || !newImportantTitle.trim()} onclick={addImportantEvent}>+ Add</button>
+              </div>
             {:else}<p class="muted">Choose a day to see its important events.</p>{/if}
           </aside>
         </div>
