@@ -106,6 +106,11 @@
   let eventUntil = $state(END);
 
   let selectedCalendarDay = $state<string | null>(null);
+  let dayOrigin = $state<{
+    view: string;
+    date: string;
+    selectedCalendarDay: string | null;
+  } | null>(null);
 
   const week = $derived(weekStart(date));
   const entries = $derived(Object.values(notebook.entries));
@@ -186,13 +191,27 @@
   }
 
   function tab(next: string) {
+    if (next !== 'day') dayOrigin = null;
     view = next;
     location.hash = next;
   }
 
   function openDay(day: string) {
+    if (view !== 'day') {
+      dayOrigin = { view, date, selectedCalendarDay };
+    }
     date = day;
     tab('day');
+  }
+
+  function returnToDayOrigin() {
+    if (!dayOrigin) return;
+    const origin = dayOrigin;
+    date = origin.date;
+    selectedCalendarDay = origin.selectedCalendarDay;
+    view = origin.view;
+    location.hash = origin.view;
+    dayOrigin = null;
   }
 
   function returnToCurrentPeriod() {
@@ -761,12 +780,23 @@
   <main>
     <div class="date-bar">
       <button
+        class="previous-period"
         aria-label="Previous period"
         disabled={date <= START}
         onclick={previousPeriod}
       >
         ←
       </button>
+
+      {#if view === 'day' && dayOrigin}
+        <button
+          class="origin-return"
+          aria-label={`Return to ${dayOrigin.view}`}
+          onclick={returnToDayOrigin}
+        >
+          ↩ Return
+        </button>
+      {/if}
 
       <label>
         <span>
@@ -795,6 +825,7 @@
       </label>
 
       <button
+        class="next-period"
         aria-label="Next period"
         disabled={date >= END}
         onclick={nextPeriod}

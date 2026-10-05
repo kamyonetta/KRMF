@@ -12,6 +12,7 @@
   border-color: var(--accent);
   color: var(--accent);
 }
+.origin-return{flex-shrink:0;white-space:nowrap;border-color:var(--accent)}
 
 .date-bar{padding:10px;background:var(--paper);border:2px solid var(--edge);box-shadow:3px 3px #0003}.important-event-add{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:16px}.calendar-important-event .delete{margin-left:auto}.web-week-event,.web-day-calendar-event{display:block;text-align:left;background:color-mix(in srgb,var(--block-color) 22%,var(--input) 78%);color:var(--ink);border:2px solid var(--edge);border-left:4px solid var(--block-color);border-radius:2px;box-shadow:2px 2px #0004;margin:1px 2px}.web-week-all-day b,.web-day-all-day b{background:var(--input);color:var(--ink);border:1px solid var(--edge);border-left:3px solid var(--accent);margin:3px 1px;padding:4px;white-space:normal;overflow-wrap:anywhere}.web-week-all-day>span,.web-day-all-day>span{overflow:hidden;overflow-wrap:anywhere}.web-week-day-head{background:var(--paper)}.web-week-hours span:first-child{transform:none!important;top:4px!important}.web-day-slot-layer>span{display:block;height:30px;border-bottom:1px solid rgba(117,104,128,.22)}
 
@@ -372,23 +373,23 @@
 @media(max-width:620px) {
   .date-bar {
     display:grid;
-    grid-template-columns:44px minmax(0,1fr) 44px;
+    grid-template-columns:44px auto minmax(0,1fr) 44px;
     gap:6px;
   }
 
   .date-bar label {
-    grid-column:2;
+    grid-column:3;
     grid-row:2;
   }
 
   .return-current {
-    grid-column:2;
+    grid-column:2 / 4;
     grid-row:1;
     width:auto;
     justify-self:center;
   }
 
-  .date-bar>button:first-child{grid-column:1;grid-row:2}.date-bar>button:nth-of-type(2){grid-column:3;grid-row:2}.tabs a:nth-child(2){font-size:13px}.web-week-all-day>span,.web-day-all-day>span{padding:5px 2px;font-size:9px}.web-week-all-day>div,.web-day-all-day>div{overflow:hidden}
+  .previous-period{grid-column:1;grid-row:2}.origin-return{grid-column:2;grid-row:2;padding-inline:8px;font-size:14px}.next-period{grid-column:4;grid-row:2}.tabs a:nth-child(2){font-size:13px}.web-week-all-day>span,.web-day-all-day>span{padding:5px 2px;font-size:9px}.web-week-all-day>div,.web-day-all-day>div{overflow:hidden}
 
   .month-grid > button {
     font-size: 18px;
