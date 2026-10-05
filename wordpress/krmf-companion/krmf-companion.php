@@ -56,6 +56,13 @@ function krmf_rate_limit($purpose, $limit, $seconds) {
     set_transient($key, $count + 1, $seconds);
     return true;
 }
+function krmf_remember_user($user_id) {
+    $duration = function () { return 30 * DAY_IN_SECONDS; };
+    add_filter('auth_cookie_expiration', $duration, 10, 3);
+    wp_set_current_user($user_id);
+    wp_set_auth_cookie($user_id, true, is_ssl());
+    remove_filter('auth_cookie_expiration', $duration, 10);
+}
 function krmf_auth_page($mode = 'login', $message = '', $error = '') {
     krmf_private_headers();
     status_header($error ? 401 : 200);
@@ -69,9 +76,9 @@ function krmf_auth_page($mode = 'login', $message = '', $error = '') {
     @font-face{font-family:Pixelify;src:url("' . esc_url($base . 'fonts/PixelifySans.ttf') . '")}
     :root{color-scheme:dark;--paper:#302b3a;--ink:#f6ead6;--edge:#756880;--accent:#e7c78b;--input:#262230}
     *{box-sizing:border-box}body{margin:0;min-height:100dvh;display:grid;place-items:center;padding:22px;font-family:Pixelify,monospace;color:var(--ink);background:linear-gradient(#11131bb8,#171924e8),url("' . $dark . '") center/cover fixed}
-    .card{width:min(430px,100%);padding:28px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:3px solid var(--edge);box-shadow:8px 8px #0007}.logo{display:block;width:150px;height:auto;margin:0 auto 12px;image-rendering:pixelated}h1{text-align:center;font-size:27px;font-weight:500;margin:8px 0 22px}.notice,.error{padding:11px;margin:0 0 14px;border:2px solid var(--edge)}.error{border-color:#ca7b7b}.field{display:grid;gap:6px;margin:14px 0}.field input{width:100%;min-height:48px;padding:10px;font:18px Pixelify,monospace;color:var(--ink);background:var(--input);border:2px solid var(--edge);border-radius:0}.primary{width:100%;min-height:48px;margin-top:10px;font:19px Pixelify,monospace;color:var(--ink);background:var(--input);border:2px solid var(--accent);box-shadow:3px 3px #0005;cursor:pointer}.links{display:flex;flex-direction:column;gap:10px;margin-top:22px;text-align:center}.links a{color:var(--accent)}.trap{position:absolute;left:-9999px}.theme-toggle{position:fixed;top:18px;right:18px;display:flex;align-items:center;gap:8px;padding:8px 11px;background:var(--paper);border:2px solid var(--edge);box-shadow:3px 3px #0005;cursor:pointer}.theme-toggle input{position:absolute;opacity:0;pointer-events:none}.theme-track{width:36px;height:20px;padding:3px;border:2px solid currentColor}.theme-track i{display:block;width:10px;height:10px;background:currentColor}.theme-toggle input:checked+.theme-track i{margin-left:16px}.theme-label::after{content:"Dark"}
-    body:has(#krmf-light:checked){color-scheme:light;--paper:#f8ecd6;--ink:#493b32;--edge:#a48b6b;--accent:#6b532b;--input:#fff6e6;background:linear-gradient(#eee1ca9c,#eee1caef),url("' . $light . '") center/cover fixed}body:has(#krmf-light:checked) .theme-label::after{content:"Light"}
-    </style></head><body><label class="theme-toggle"><input id="krmf-light" type="checkbox" aria-label="Use light mode"><span class="theme-track"><i></i></span><span class="theme-label"></span></label><main class="card"><img class="logo" src="' . esc_url($base . 'art/krmf-logo.png') . '" alt="KRMF">';
+    .card{width:min(430px,100%);padding:28px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:3px solid var(--edge);box-shadow:8px 8px #0007}.logo{display:block;width:150px;height:auto;margin:0 auto 12px;image-rendering:pixelated}h1{text-align:center;font-size:27px;font-weight:500;margin:8px 0 22px}.notice,.error{padding:11px;margin:0 0 14px;border:2px solid var(--edge)}.error{border-color:#ca7b7b}.field{display:grid;gap:6px;margin:14px 0}.field input{width:100%;min-height:48px;padding:10px;font:18px Pixelify,monospace;color:var(--ink);background:var(--input);border:2px solid var(--edge);border-radius:0}.primary{width:100%;min-height:48px;margin-top:10px;font:19px Pixelify,monospace;color:var(--ink);background:var(--input);border:2px solid var(--accent);box-shadow:3px 3px #0005;cursor:pointer}.links{display:flex;flex-direction:column;gap:10px;margin-top:22px;text-align:center}.links a{color:var(--accent)}.trap{position:absolute;left:-9999px}.theme-toggle{position:fixed;top:18px;right:18px;width:58px;height:58px;display:grid;place-items:center;padding:4px;background:var(--paper);border:2px solid var(--edge);box-shadow:3px 3px #0005;cursor:pointer}.theme-toggle input{position:absolute;opacity:0;pointer-events:none}.theme-toggle svg{width:46px;height:46px;image-rendering:pixelated}.sun-icon{display:none}.theme-toggle input:checked~.moon-icon{display:none}.theme-toggle input:checked~.sun-icon{display:block}
+    body:has(#krmf-light:checked){color-scheme:light;--paper:#f8ecd6;--ink:#493b32;--edge:#a48b6b;--accent:#6b532b;--input:#fff6e6;background:linear-gradient(#eee1ca9c,#eee1caef),url("' . $light . '") center/cover fixed}
+    </style></head><body><label class="theme-toggle"><input id="krmf-light" type="checkbox" aria-label="Switch light and dark mode"><svg class="moon-icon" viewBox="0 0 48 48" aria-hidden="true" shape-rendering="crispEdges"><path fill="#291738" d="M20 4h10v5h-5v5h-3v9h4v4h8v-3h6v8h-3v6h-6v4H18v-3h-6v-5H8V17h3v-6h5V7h4z"/><path fill="#f6cf61" d="M20 6h7v2h-5v5h-3v11h4v5h10v-2h4v4h-5v5H19v-3h-5v-5h-3V18h3v-6h6z"/><path fill="#fff3bb" d="M20 7h4v2h-4v5h-4v7h-3v-4h2v-6h5zM14 23h3v6h-3zM18 30h5v3h-5z"/><path fill="#fff1ac" d="M36 5h3v4h4v3h-4v4h-3v-4h-4V9h4zM40 20h3v3h-3z"/></svg><svg class="sun-icon" viewBox="0 0 48 48" aria-hidden="true" shape-rendering="crispEdges"><path fill="#df693d" d="M23 4h3v7h-3zM23 36h3v7h-3zM4 23h7v3H4zM37 23h7v3h-7zM9 9h4v4H9zM35 9h4v4h-4zM9 35h4v4H9zM35 35h4v4h-4z"/><path fill="#291738" d="M17 10h15v4h5v5h3v14h-4v5H17v-3h-5v-5H9V19h3v-5h5z"/><path fill="#f4a22e" d="M17 12h13v4h5v14h-4v4H17v-4h-5V19h5z"/><path fill="#ffd84d" d="M17 12h12v4h4v10h-4v4H16v-4h-4v-7h5z"/><path fill="#fff3ad" d="M18 14h10v3H18zM15 18h3v7h-3z"/></svg></label><main class="card"><img class="logo" src="' . esc_url($base . 'art/krmf-logo.png') . '" alt="KRMF">';
     if ($mode !== 'login') echo '<h1>' . esc_html($title) . '</h1>';
     if ($message) echo '<p class="notice">' . esc_html($message) . '</p>';
     if ($error) echo '<p class="error" role="alert">' . esc_html($error) . '</p>';
@@ -121,7 +128,7 @@ function krmf_handle_auth() {
         if (username_exists($username)) krmf_auth_page('register', '', 'That username is unavailable.');
         $user_id = wp_insert_user(['user_login'=>$username, 'user_pass'=>$password, 'user_email'=>'', 'role'=>'krmf_companion', 'display_name'=>$username]);
         if (is_wp_error($user_id)) krmf_auth_page('register', '', 'Account creation failed. Try another username.');
-        wp_set_current_user($user_id); wp_set_auth_cookie($user_id, true, is_ssl());
+        krmf_remember_user($user_id);
         wp_safe_redirect(krmf_login_url()); exit;
     }
     $user = get_user_by('login', $username);
@@ -134,7 +141,7 @@ function krmf_handle_auth() {
         if ($new === '' || $new !== $confirm) krmf_auth_page('password', '', 'Enter the same new password twice.');
         wp_set_password($new, $user->ID);
         delete_user_meta($user->ID, 'krmf_failed_logins');
-        wp_set_current_user($user->ID); wp_set_auth_cookie($user->ID, true, is_ssl());
+        krmf_remember_user($user->ID);
         wp_safe_redirect(krmf_login_url()); exit;
     }
     if ($user && get_user_meta($user->ID, 'krmf_locked', true)) krmf_auth_page('login', '', krmf_locked_message());
@@ -151,7 +158,7 @@ function krmf_handle_auth() {
         krmf_auth_page('login', '', 'Username or password is incorrect. One attempt remains.');
     }
     delete_user_meta($user->ID, 'krmf_failed_logins');
-    wp_set_current_user($user->ID); wp_set_auth_cookie($user->ID, true, is_ssl());
+    krmf_remember_user($user->ID);
     wp_safe_redirect(krmf_login_url()); exit;
 }
 
@@ -220,7 +227,7 @@ add_action('template_redirect', function () {
         'username'=>$user->user_login,
         'endpoint'=>rest_url('krmf/v1/sync'),
         'nonce'=>wp_create_nonce('wp_rest'),
-        'logout'=>wp_nonce_url(krmf_login_url('logout'), 'krmf_logout'),
+        'logout'=>add_query_arg('_wpnonce', wp_create_nonce('krmf_logout'), krmf_login_url('logout')),
         'password'=>krmf_login_url('password'),
         'site'=>home_url('/')
     ];

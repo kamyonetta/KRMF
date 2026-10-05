@@ -52,7 +52,6 @@
     read,
     choose,
     synchronize,
-    signOut,
     isPreview
   } from './store.ts';
 
@@ -1627,7 +1626,7 @@
       <nav class="account-links" aria-label="Account">
         <strong>{window.KRMF_SESSION.username}</strong>
         <a href={window.KRMF_SESSION.password}>Change password</a>
-        <button onclick={() => void signOut()}>Log out</button>
+        <button onclick={() => location.assign(window.KRMF_SESSION!.logout)}>Log out</button>
       </nav>
     {/if}
     <span>
