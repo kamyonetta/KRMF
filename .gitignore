@@ -13,3 +13,5 @@ native/widgets/build/
 
 # Generated WordPress companion bundles (created by npm run build:companion)
 wordpress/krmf-companion/web/assets/
+wordpress/krmf-companion/web/art/classroom-*.png
+wordpress/krmf-companion/web/fonts/

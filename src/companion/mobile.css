@@ -447,3 +447,6 @@
 }
 
 .year-important-add{grid-template-columns:minmax(0,1fr);margin-top:14px}.year-important-add button{width:100%}
+
+footer>span:first-child{letter-spacing:0}.account-links{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}.account-links strong{color:var(--ink)}.account-links a{color:var(--accent)}.account-links button{min-height:34px;padding:4px 9px;font-size:14px;box-shadow:none}
+@media(max-width:620px){footer{align-items:center;gap:10px;flex-wrap:wrap}.account-links{order:3;width:100%}}

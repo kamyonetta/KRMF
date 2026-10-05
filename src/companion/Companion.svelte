@@ -52,6 +52,7 @@
     read,
     choose,
     synchronize,
+    signOut,
     isPreview
   } from './store.ts';
 
@@ -1621,7 +1622,14 @@
   </dialog>
 
   <footer>
-    Il faut cultiver notre jardin
+    <span>Il faut cultiver notre jardin</span>
+    {#if !isPreview && window.KRMF_SESSION}
+      <nav class="account-links" aria-label="Account">
+        <strong>{window.KRMF_SESSION.username}</strong>
+        <a href={window.KRMF_SESSION.password}>Change password</a>
+        <button onclick={() => void signOut()}>Log out</button>
+      </nav>
+    {/if}
     <span>
       KRMF
     </span>

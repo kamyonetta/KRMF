@@ -1,6 +1,6 @@
 import { emptyState, edit, pending, reconcile, resolve, type State, type Reply, type Row } from './sync.ts';
 import { record } from './schema.ts';
-export type Session = { user: number; endpoint: string; nonce: string; logout: string; site: string };
+export type Session = { user: number; username: string; endpoint: string; nonce: string; logout: string; password: string; site: string };
 declare global { interface Window { KRMF_SESSION?: Session } }
 const preview = import.meta.env.MODE === 'preview';
 let db: IDBDatabase;
