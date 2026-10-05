@@ -62,16 +62,17 @@ function krmf_auth_page($mode = 'login', $message = '', $error = '') {
     $base = plugins_url('web/', __FILE__);
     $dark = esc_url($base . 'art/classroom-night.png');
     $light = esc_url($base . 'art/classroom-indie.png');
-    $title = $mode === 'register' ? 'Create your notebook' : ($mode === 'password' ? 'Change password' : 'Welcome back');
+    $title = $mode === 'register' ? 'Create your notebook' : ($mode === 'password' ? 'Change password' : 'Login');
     $action = esc_url(krmf_login_url($mode === 'login' ? '' : $mode));
     header("Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; form-action 'self'; frame-ancestors 'none'; base-uri 'none'");
     echo '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><title>KRMF · ' . esc_html($title) . '</title><style>
     @font-face{font-family:Pixelify;src:url("' . esc_url($base . 'fonts/PixelifySans.ttf') . '")}
     :root{color-scheme:dark;--paper:#302b3a;--ink:#f6ead6;--edge:#756880;--accent:#e7c78b;--input:#262230}
     *{box-sizing:border-box}body{margin:0;min-height:100dvh;display:grid;place-items:center;padding:22px;font-family:Pixelify,monospace;color:var(--ink);background:linear-gradient(#11131bb8,#171924e8),url("' . $dark . '") center/cover fixed}
-    .card{width:min(430px,100%);padding:28px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:3px solid var(--edge);box-shadow:8px 8px #0007}.logo{display:block;width:150px;height:auto;margin:0 auto 12px;image-rendering:pixelated}h1{text-align:center;font-size:27px;font-weight:500;margin:8px 0 22px}.notice,.error{padding:11px;margin:0 0 14px;border:2px solid var(--edge)}.error{border-color:#ca7b7b}.field{display:grid;gap:6px;margin:14px 0}.field input{width:100%;min-height:48px;padding:10px;font:18px Pixelify,monospace;color:var(--ink);background:var(--input);border:2px solid var(--edge);border-radius:0}.primary{width:100%;min-height:48px;margin-top:10px;font:19px Pixelify,monospace;color:var(--ink);background:var(--input);border:2px solid var(--accent);box-shadow:3px 3px #0005;cursor:pointer}.links{display:flex;flex-direction:column;gap:10px;margin-top:22px;text-align:center}.links a{color:var(--accent)}.trap{position:absolute;left:-9999px}
-    @media(prefers-color-scheme:light){:root{color-scheme:light;--paper:#f8ecd6;--ink:#493b32;--edge:#a48b6b;--accent:#6b532b;--input:#fff6e6}body{background:linear-gradient(#eee1ca9c,#eee1caef),url("' . $light . '") center/cover fixed}}
-    </style></head><body><main class="card"><img class="logo" src="' . esc_url($base . 'art/krmf-logo.png') . '" alt="KRMF"><h1>' . esc_html($title) . '</h1>';
+    .card{width:min(430px,100%);padding:28px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:3px solid var(--edge);box-shadow:8px 8px #0007}.logo{display:block;width:150px;height:auto;margin:0 auto 12px;image-rendering:pixelated}h1{text-align:center;font-size:27px;font-weight:500;margin:8px 0 22px}.notice,.error{padding:11px;margin:0 0 14px;border:2px solid var(--edge)}.error{border-color:#ca7b7b}.field{display:grid;gap:6px;margin:14px 0}.field input{width:100%;min-height:48px;padding:10px;font:18px Pixelify,monospace;color:var(--ink);background:var(--input);border:2px solid var(--edge);border-radius:0}.primary{width:100%;min-height:48px;margin-top:10px;font:19px Pixelify,monospace;color:var(--ink);background:var(--input);border:2px solid var(--accent);box-shadow:3px 3px #0005;cursor:pointer}.links{display:flex;flex-direction:column;gap:10px;margin-top:22px;text-align:center}.links a{color:var(--accent)}.trap{position:absolute;left:-9999px}.theme-toggle{position:fixed;top:18px;right:18px;display:flex;align-items:center;gap:8px;padding:8px 11px;background:var(--paper);border:2px solid var(--edge);box-shadow:3px 3px #0005;cursor:pointer}.theme-toggle input{position:absolute;opacity:0;pointer-events:none}.theme-track{width:36px;height:20px;padding:3px;border:2px solid currentColor}.theme-track i{display:block;width:10px;height:10px;background:currentColor}.theme-toggle input:checked+.theme-track i{margin-left:16px}.theme-label::after{content:"Dark"}
+    body:has(#krmf-light:checked){color-scheme:light;--paper:#f8ecd6;--ink:#493b32;--edge:#a48b6b;--accent:#6b532b;--input:#fff6e6;background:linear-gradient(#eee1ca9c,#eee1caef),url("' . $light . '") center/cover fixed}body:has(#krmf-light:checked) .theme-label::after{content:"Light"}
+    </style></head><body><label class="theme-toggle"><input id="krmf-light" type="checkbox" aria-label="Use light mode"><span class="theme-track"><i></i></span><span class="theme-label"></span></label><main class="card"><img class="logo" src="' . esc_url($base . 'art/krmf-logo.png') . '" alt="KRMF">';
+    if ($mode !== 'login') echo '<h1>' . esc_html($title) . '</h1>';
     if ($message) echo '<p class="notice">' . esc_html($message) . '</p>';
     if ($error) echo '<p class="error" role="alert">' . esc_html($error) . '</p>';
     echo '<form method="post" action="' . $action . '">';
@@ -84,10 +85,10 @@ function krmf_auth_page($mode = 'login', $message = '', $error = '') {
         echo '<label class="field">Password<input name="password" type="password" autocomplete="' . ($mode === 'register' ? 'new-password' : 'current-password') . '" required></label>';
         if ($mode === 'register') echo '<label class="field">Repeat password<input name="password_confirm" type="password" autocomplete="new-password" required></label>';
     }
-    echo '<button class="primary" type="submit">' . ($mode === 'register' ? 'Create account' : ($mode === 'password' ? 'Change password' : 'Enter KRMF')) . '</button></form><nav class="links">';
+    echo '<button class="primary" type="submit">' . ($mode === 'register' ? 'Create account' : ($mode === 'password' ? 'Change password' : 'Login')) . '</button></form><nav class="links">';
     if ($mode !== 'login') echo '<a href="' . esc_url(krmf_login_url()) . '">Back to sign in</a>';
     if ($mode === 'login') {
-        echo '<a href="' . esc_url(krmf_login_url('register')) . '">No account? Register</a>';
+        echo '<a href="' . esc_url(krmf_login_url('register')) . '">Register</a>';
         echo '<a href="' . esc_url(krmf_login_url('password')) . '">Change password</a>';
     }
     echo '</nav></main></body></html>';
