@@ -107,8 +107,12 @@ function krmf_locked_message() {
 function krmf_handle_auth() {
     $mode = sanitize_key($_POST['krmf_form'] ?? ($_GET['krmf_action'] ?? 'login'));
     if ($mode === 'logout') {
-        if (is_user_logged_in() && wp_verify_nonce((string)($_GET['_wpnonce'] ?? ''), 'krmf_logout')) wp_logout();
-        wp_safe_redirect(krmf_login_url()); exit;
+        if (is_user_logged_in() && wp_verify_nonce((string)($_GET['_wpnonce'] ?? ''), 'krmf_logout')) {
+            wp_destroy_current_session();
+            wp_clear_auth_cookie();
+            wp_set_current_user(0);
+        }
+        wp_safe_redirect(home_url('/krmf/'), 302, 'KRMF'); exit;
     }
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         if (krmf_allowed() && $mode === 'login') return;
