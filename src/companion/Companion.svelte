@@ -1034,6 +1034,7 @@
                   {#each scheduleBlocks(date) as block}
                     <button
                       class="web-week-event web-day-calendar-event"
+                      class:compact={block.end-block.start<=30}
                       class:editable={block.event.id.startsWith('slot:')}
                       style:--block-color={blockColor(block.event)}
                       onclick={()=>openScheduleEditor(block,date)}
@@ -1051,7 +1052,7 @@
                       </strong>
 
                       <small>
-                        {timeText(block.start)}
+                        {timeText(block.start)}{#if block.end-block.start>30}–{timeText(block.end)}{/if}
                       </small>
                     </button>
                   {/each}
@@ -1607,6 +1608,7 @@
                   {#each scheduleBlocks(day) as block}
                     <button
                       class="web-week-event"
+                      class:compact={block.end-block.start<=30}
                       style:--block-color={blockColor(block.event)}
                       style:top={`${(Math.max(block.start, 480) - 480) / 900 * 100}%`}
                       style:height={`${Math.max(
@@ -1623,7 +1625,7 @@
                       </strong>
 
                       <small>
-                        {timeText(block.start)}
+                        {timeText(block.start)}{#if block.end-block.start>30}–{timeText(block.end)}{/if}
                       </small>
                     </button>
                   {/each}
