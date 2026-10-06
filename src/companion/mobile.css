@@ -374,9 +374,12 @@ html.schedule-focus-open,html.schedule-focus-open body{overflow:hidden}
 .schedule-focused>p{flex:0 0 auto;margin:0 52px 6px 0!important;font-size:11px;line-height:1.2}
 .schedule-focused .web-day-scroll,.schedule-focused .web-week-scroll{flex:1;min-width:0;min-height:0;overflow:hidden!important;border:2px solid var(--edge)}
 .schedule-focused .web-day,.schedule-focused .web-week{width:100%;height:100%;min-width:0;display:flex;flex-direction:column}
-.schedule-focused .web-day-head,.schedule-focused .web-week-head{flex:0 0 42px;min-height:0}
-.schedule-focused .web-day-all-day,.schedule-focused .web-week-all-day{flex:0 0 auto;min-height:38px;max-height:none;overflow:visible}
-.schedule-focused .web-week-all-day>div,.schedule-focused .web-day-all-day>div{overflow:visible}
+.schedule-focused .web-day-head{flex:0 0 48px;min-height:0}
+.schedule-focused .web-week-head{flex:0 0 70px;min-height:70px}
+.schedule-focused .web-day-all-day{flex:0 0 auto;min-height:38px;max-height:none;overflow:visible}
+.schedule-focused .web-week-all-day{flex:0 0 68px;min-height:68px;max-height:68px;overflow:hidden}
+.schedule-focused .web-day-all-day>div{overflow:visible}
+.schedule-focused .web-week-all-day>div{height:68px;overflow-x:hidden;overflow-y:auto;scrollbar-width:thin}
 .schedule-focused .web-day-grid,.schedule-focused .web-week-grid{flex:1;height:auto;min-height:0}
 .schedule-focused .web-day-column{height:auto;min-height:0}
 .schedule-focused .web-day-slot-layer{grid-template-rows:repeat(30,minmax(0,1fr))}
