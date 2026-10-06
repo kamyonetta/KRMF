@@ -104,6 +104,8 @@
   let eventColor = $state<keyof typeof COLORS>('blue');
   let eventRepeats = $state(false);
   let eventUntil = $state(END);
+  let focusedSchedule = $state<'day' | 'week' | null>(null);
+  let closingSchedule = $state(false);
 
   let selectedCalendarDay = $state<string | null>(null);
   let dayOrigin = $state<{
@@ -349,6 +351,23 @@
     else {const row=rows('calendar_events').find(r=>r.id===editingBlock!.event.id);if(row)await persist('calendar_events',row,true);}scheduleDialog.close();
   }
   async function commitSlot(day:string,position:number,row:Row,e:KeyboardEvent){if(e.key!=='Enter')return;e.preventDefault();const key=`${day}:${position}`,text=slotDrafts[key]??'';if(!text.trim())return;await persist('day_planner_lines',{...row,text:text.trim()});delete slotDrafts[key];}
+
+  function openScheduleFocus(kind:'day'|'week'){
+    closingSchedule=false;
+    focusedSchedule=kind;
+    document.documentElement.classList.add('schedule-focus-open');
+  }
+
+  function closeScheduleFocus(){
+    if(!focusedSchedule||closingSchedule)return;
+    (document.activeElement as HTMLElement | null)?.blur();
+    closingSchedule=true;
+    window.setTimeout(()=>{
+      focusedSchedule=null;
+      closingSchedule=false;
+      document.documentElement.classList.remove('schedule-focus-open');
+    },240);
+  }
 
   const eventNames = (day: string) => [
     ...rows('important_events')
@@ -699,11 +718,20 @@
         'focus',
         refresh
       );
+
+      document.documentElement.classList.remove(
+        'schedule-focus-open'
+      );
     };
   });
 </script>
 
+<svelte:window onkeydown={(event)=>{if(event.key==='Escape'&&focusedSchedule)closeScheduleFocus();}}/>
+
 <div class="pocket">
+  {#if focusedSchedule}
+    <button class="schedule-focus-backdrop" class:closing={closingSchedule} aria-label="Close expanded schedule" onclick={closeScheduleFocus}></button>
+  {/if}
   <header class="masthead">
     <a
       href="#day"
@@ -955,7 +983,10 @@
       {/if}
 
       <div class="daily-planner-layout">
-      <section class="sheet daily-schedule-sheet">
+      <section class="sheet daily-schedule-sheet" class:schedule-focused={focusedSchedule==='day'} class:schedule-closing={focusedSchedule==='day'&&closingSchedule}>
+        <button class="schedule-focus-button" class:active={focusedSchedule==='day'} aria-label={focusedSchedule==='day'?'Close expanded schedule':'Expand daily schedule'} onclick={()=>focusedSchedule==='day'?closeScheduleFocus():openScheduleFocus('day')}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 20h5v-5M4 9l6-6M20 15l-6 6"/></svg>
+        </button>
         <h1>
           Daily schedule
           <span>
@@ -1526,7 +1557,10 @@
       {/if}
 
     {:else}
-      <section class="sheet weekly-sheet">
+      <section class="sheet weekly-sheet" class:schedule-focused={focusedSchedule==='week'} class:schedule-closing={focusedSchedule==='week'&&closingSchedule}>
+        <button class="schedule-focus-button" class:active={focusedSchedule==='week'} aria-label={focusedSchedule==='week'?'Close expanded schedule':'Expand weekly schedule'} onclick={()=>focusedSchedule==='week'?closeScheduleFocus():openScheduleFocus('week')}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 20h5v-5M4 9l6-6M20 15l-6 6"/></svg>
+        </button>
         <h1>
           Weekly schedule
         </h1>

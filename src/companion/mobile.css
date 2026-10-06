@@ -359,6 +359,37 @@
 .web-week-event.compact strong{font-size:12px!important;line-height:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .web-week-event.compact small{font-size:9px;line-height:9px;white-space:nowrap}
 
+/* Animated, viewport-fitted schedule focus mode. */
+html.schedule-focus-open,html.schedule-focus-open body{overflow:hidden}
+.daily-schedule-sheet,.weekly-sheet{position:relative}
+.schedule-focus-button{position:absolute;top:12px;right:12px;z-index:8;width:42px;height:42px;min-height:42px;padding:7px;display:grid;place-items:center;border:2px solid var(--edge);background:var(--input);color:var(--accent);box-shadow:3px 3px #0005}
+.schedule-focus-button svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:square;stroke-linejoin:miter}
+.schedule-focus-button.active svg{transform:rotate(180deg)}
+.schedule-focus-button:hover{transform:translate(-1px,-1px);box-shadow:4px 4px #0005}
+.schedule-focus-backdrop{position:fixed;inset:0;z-index:90;width:100%;height:100%;min-height:0;padding:0;border:0;background:#111019aa;box-shadow:none;backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);animation:schedule-backdrop-in .24s ease both}
+.schedule-focus-backdrop.closing{animation:schedule-backdrop-out .24s ease both}
+.schedule-focused{position:fixed!important;inset:max(8px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));z-index:91;width:auto!important;height:auto!important;min-height:0!important;margin:0!important;padding:12px!important;display:flex!important;flex-direction:column;overflow:hidden!important;box-shadow:8px 8px #0008;animation:schedule-focus-in .24s cubic-bezier(.2,.85,.25,1) both}
+.schedule-focused.schedule-closing{animation:schedule-focus-out .24s ease both}
+.schedule-focused>h1{flex:0 0 auto;margin:0 52px 5px 0!important;padding:0!important;font-size:21px}
+.schedule-focused>p{flex:0 0 auto;margin:0 52px 6px 0!important;font-size:11px;line-height:1.2}
+.schedule-focused .web-day-scroll,.schedule-focused .web-week-scroll{flex:1;min-width:0;min-height:0;overflow:hidden!important;border:2px solid var(--edge)}
+.schedule-focused .web-day,.schedule-focused .web-week{width:100%;height:100%;min-width:0;display:flex;flex-direction:column}
+.schedule-focused .web-day-head,.schedule-focused .web-week-head{flex:0 0 42px;min-height:0}
+.schedule-focused .web-day-all-day,.schedule-focused .web-week-all-day{flex:0 0 auto;min-height:38px;max-height:70px;overflow:hidden}
+.schedule-focused .web-day-grid,.schedule-focused .web-week-grid{flex:1;height:auto;min-height:0}
+.schedule-focused .web-day-column{height:auto;min-height:0}
+.schedule-focused .web-day-slot-layer{grid-template-rows:repeat(30,minmax(0,1fr))}
+.schedule-focused .web-day-slot-layer input,.schedule-focused .web-day-slot-layer>span,.schedule-focused .web-week-empty-slot{height:auto;min-height:0;padding-block:0}
+.schedule-focused .web-week-event{min-height:10px;margin:0 1px;padding:1px 3px;box-shadow:none}
+.schedule-focused .web-week-event strong{font-size:clamp(8px,1.45vw,13px);line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.schedule-focused .web-week-event small{font-size:clamp(7px,1.1vw,10px);line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.schedule-focused .web-week-event.compact strong{font-size:9px!important;line-height:9px}
+.schedule-focused .web-week-event.compact small{font-size:7px;line-height:7px}
+@keyframes schedule-focus-in{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes schedule-focus-out{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.9)}}
+@keyframes schedule-backdrop-in{from{opacity:0}to{opacity:1}}
+@keyframes schedule-backdrop-out{from{opacity:1}to{opacity:0}}
+
 
 /* Daily to-dos and notes below the unified time grid */
 

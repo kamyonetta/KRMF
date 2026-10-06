@@ -7,5 +7,6 @@
 - Web desktop refinement: compact viewport-fitting month with visible important-event names, internally scrolling weekly timetable, Mac light/night classroom backgrounds and themed scrollbars, expanding weekly day rows, and automatic server refresh on open/focus with no manual Sync button.
 - Web accounts: WordPress member login and registration, per-user notebook rows, password changes, two-failure account locking, themed authentication screens, and account controls are deployed. Existing web data belongs to `efecan` (WordPress user ID 2).
 - Web timed events: 30-minute event labels use a compact layout, and events longer than 30 minutes show both start and end times in daily and weekly schedules.
+- Web schedule focus: daily and weekly hourly schedules have an animated themed expand/close control; focused schedules center over a blurred backdrop and fit the full 8 AM–11 PM timetable within the viewport without page or schedule scrolling.
 - Deployment artifact: `krmf-companion-update.zip`; extract over `wp-content/plugins/krmf-companion` in cPanel.
 - Validation: `npm run check` and all 40 Node tests pass; macOS app and widget extension build and sign successfully.
