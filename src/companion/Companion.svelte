@@ -202,6 +202,11 @@
     if (view !== 'day') {
       dayOrigin = { view, date, selectedCalendarDay };
     }
+    if (focusedSchedule) {
+      focusedSchedule = null;
+      closingSchedule = false;
+      document.documentElement.classList.remove('schedule-focus-open');
+    }
     date = day;
     tab('day');
   }
@@ -985,7 +990,7 @@
       <div class="daily-planner-layout">
       <section class="sheet daily-schedule-sheet" class:schedule-focused={focusedSchedule==='day'} class:schedule-closing={focusedSchedule==='day'&&closingSchedule}>
         <button class="schedule-focus-button" class:active={focusedSchedule==='day'} aria-label={focusedSchedule==='day'?'Close expanded schedule':'Expand daily schedule'} onclick={()=>focusedSchedule==='day'?closeScheduleFocus():openScheduleFocus('day')}>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 20h5v-5M4 9l6-6M20 15l-6 6"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="8" y1="16" x2="16" y2="8"/><polygon points="14,3 21,3 21,10"/><polygon points="3,14 3,21 10,21"/></svg>
         </button>
         <h1>
           Daily schedule
@@ -1559,7 +1564,7 @@
     {:else}
       <section class="sheet weekly-sheet" class:schedule-focused={focusedSchedule==='week'} class:schedule-closing={focusedSchedule==='week'&&closingSchedule}>
         <button class="schedule-focus-button" class:active={focusedSchedule==='week'} aria-label={focusedSchedule==='week'?'Close expanded schedule':'Expand weekly schedule'} onclick={()=>focusedSchedule==='week'?closeScheduleFocus():openScheduleFocus('week')}>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5M15 20h5v-5M4 9l6-6M20 15l-6 6"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="8" y1="16" x2="16" y2="8"/><polygon points="14,3 21,3 21,10"/><polygon points="3,14 3,21 10,21"/></svg>
         </button>
         <h1>
           Weekly schedule

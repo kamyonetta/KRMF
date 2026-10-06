@@ -362,9 +362,9 @@
 /* Animated, viewport-fitted schedule focus mode. */
 html.schedule-focus-open,html.schedule-focus-open body{overflow:hidden}
 .daily-schedule-sheet,.weekly-sheet{position:relative}
-.schedule-focus-button{position:absolute;top:12px;right:12px;z-index:8;width:42px;height:42px;min-height:42px;padding:7px;display:grid;place-items:center;border:2px solid var(--edge);background:var(--input);color:var(--accent);box-shadow:3px 3px #0005}
-.schedule-focus-button svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:square;stroke-linejoin:miter}
-.schedule-focus-button.active svg{transform:rotate(180deg)}
+.schedule-focus-button{position:absolute;top:12px;right:12px;z-index:8;width:42px;height:42px;min-height:42px;padding:7px;display:grid;place-items:center;border:2px solid var(--edge);background:var(--input);color:#a7a5ad;box-shadow:3px 3px #0005}
+:root[data-theme=light] .schedule-focus-button{color:var(--accent)}
+.schedule-focus-button svg{width:100%;height:100%;fill:currentColor;stroke:currentColor;stroke-width:2;stroke-linecap:square}
 .schedule-focus-button:hover{transform:translate(-1px,-1px);box-shadow:4px 4px #0005}
 .schedule-focus-backdrop{position:fixed;inset:0;z-index:90;width:100%;height:100%;min-height:0;padding:0;border:0;background:#111019aa;box-shadow:none;backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);animation:schedule-backdrop-in .24s ease both}
 .schedule-focus-backdrop.closing{animation:schedule-backdrop-out .24s ease both}
@@ -389,6 +389,13 @@ html.schedule-focus-open,html.schedule-focus-open body{overflow:hidden}
 @keyframes schedule-focus-out{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.9)}}
 @keyframes schedule-backdrop-in{from{opacity:0}to{opacity:1}}
 @keyframes schedule-backdrop-out{from{opacity:1}to{opacity:0}}
+@media(min-width:621px){
+  .daily-schedule-sheet.schedule-focused{left:50%;right:auto;width:50vw!important;animation-name:schedule-focus-center-in}
+  .weekly-sheet.schedule-focused{left:50%;right:auto;width:75vw!important;animation-name:schedule-focus-center-in}
+  .daily-schedule-sheet.schedule-focused.schedule-closing,.weekly-sheet.schedule-focused.schedule-closing{animation-name:schedule-focus-center-out}
+  @keyframes schedule-focus-center-in{from{opacity:0;transform:translateX(-50%) scale(.9)}to{opacity:1;transform:translateX(-50%) scale(1)}}
+  @keyframes schedule-focus-center-out{from{opacity:1;transform:translateX(-50%) scale(1)}to{opacity:0;transform:translateX(-50%) scale(.9)}}
+}
 
 
 /* Daily to-dos and notes below the unified time grid */
