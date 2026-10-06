@@ -375,11 +375,13 @@ html.schedule-focus-open,html.schedule-focus-open body{overflow:hidden}
 .schedule-focused .web-day-scroll,.schedule-focused .web-week-scroll{flex:1;min-width:0;min-height:0;overflow:hidden!important;border:2px solid var(--edge)}
 .schedule-focused .web-day,.schedule-focused .web-week{width:100%;height:100%;min-width:0;display:flex;flex-direction:column}
 .schedule-focused .web-day-head,.schedule-focused .web-week-head{flex:0 0 42px;min-height:0}
-.schedule-focused .web-day-all-day,.schedule-focused .web-week-all-day{flex:0 0 auto;min-height:38px;max-height:70px;overflow:hidden}
+.schedule-focused .web-day-all-day,.schedule-focused .web-week-all-day{flex:0 0 auto;min-height:38px;max-height:none;overflow:visible}
+.schedule-focused .web-week-all-day>div,.schedule-focused .web-day-all-day>div{overflow:visible}
 .schedule-focused .web-day-grid,.schedule-focused .web-week-grid{flex:1;height:auto;min-height:0}
 .schedule-focused .web-day-column{height:auto;min-height:0}
 .schedule-focused .web-day-slot-layer{grid-template-rows:repeat(30,minmax(0,1fr))}
-.schedule-focused .web-day-slot-layer input,.schedule-focused .web-day-slot-layer>span,.schedule-focused .web-week-empty-slot{height:auto;min-height:0;padding-block:0}
+.schedule-focused .web-day-slot-layer input,.schedule-focused .web-day-slot-layer>span{height:auto;min-height:0;padding-block:0}
+.schedule-focused .web-week-empty-slot{height:calc(100% / 30);min-height:0;padding:0}
 .schedule-focused .web-week-event{min-height:10px;margin:0 1px;padding:1px 3px;box-shadow:none}
 .schedule-focused .web-week-event strong{font-size:clamp(8px,1.45vw,13px);line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .schedule-focused .web-week-event small{font-size:clamp(7px,1.1vw,10px);line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
