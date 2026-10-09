@@ -94,6 +94,7 @@
   let mask = $state(127);
   let newImportantTitle = $state('');
   let slotDrafts = $state<Record<string,string>>({});
+  const committingSlots = new Set<string>();
   let scheduleDialog: HTMLDialogElement;
   let editingBlock = $state<ReturnType<typeof scheduleBlocks>[number] | null>(null);
   let editingDay = $state('');
@@ -355,7 +356,7 @@
     else if(editingBlock.event.id.startsWith('slot:')){for(let position=Math.floor(editingBlock.start/30)-16;position<=Math.ceil(editingBlock.end/30)-17;position++){const row=slotFor(editingDay,position);if(String(row.text).trim()===editingBlock.event.title)await persist('day_planner_lines',row,true);}}
     else {const row=rows('calendar_events').find(r=>r.id===editingBlock!.event.id);if(row)await persist('calendar_events',row,true);}scheduleDialog.close();
   }
-  async function commitSlot(day:string,position:number,row:Row,e:KeyboardEvent){if(e.key!=='Enter')return;e.preventDefault();const key=`${day}:${position}`,text=slotDrafts[key]??'';if(!text.trim())return;await persist('day_planner_lines',{...row,text:text.trim()});delete slotDrafts[key];}
+  async function commitSlot(day:string,position:number,row:Row,e?:KeyboardEvent){if(e&&e.key!=='Enter')return;e?.preventDefault();const key=`${day}:${position}`,text=slotDrafts[key]??'';if(!text.trim()||committingSlots.has(key))return;committingSlots.add(key);try{await persist('day_planner_lines',{...row,text:text.trim()});delete slotDrafts[key];}finally{committingSlots.delete(key);}}
 
   function openScheduleFocus(kind:'day'|'week'){
     closingSchedule=false;
@@ -1062,7 +1063,7 @@
                     {@const row = slotFor(date, position)}
                     {@const draftKey = `${date}:${position}`}
 
-                    {#if row.text}<span aria-hidden="true"></span>{:else}<input disabled={!ready} aria-label={`${timeText((position + 16) * 30)} plan`} maxlength="20" value={slotDrafts[draftKey]??''} oninput={e=>slotDrafts[draftKey]=value(e)} onkeydown={e=>commitSlot(date,position,row,e)} placeholder=""/>{/if}
+                    {#if row.text}<span aria-hidden="true"></span>{:else}<input disabled={!ready} aria-label={`${timeText((position + 16) * 30)} plan`} maxlength="20" value={slotDrafts[draftKey]??''} oninput={e=>slotDrafts[draftKey]=value(e)} onkeydown={e=>commitSlot(date,position,row,e)} onblur={()=>commitSlot(date,position,row)} placeholder=""/>{/if}
                   {/each}
                 </div>
 
